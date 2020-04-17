@@ -13,6 +13,7 @@
     "@types/node": "^12.12.35",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
+    "gh-pages": "^2.2.0",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.13.1",
@@ -20,6 +21,8 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -41,5 +44,6 @@
       "last 1 safari version",
       "ie 11"
     ]
-  }
+  },
+  "homepage": "https://snerks.github.io/react-mui-reversi-ts"
 }

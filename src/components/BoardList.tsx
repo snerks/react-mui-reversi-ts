@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             backgroundColor: "black",
-            height: "50%"
+            margin: "15px 0"
         },
         cell: {
             display: "flex",
@@ -18,19 +18,19 @@ const useStyles = makeStyles((theme) =>
             alignItems: "center"
         },
         token: {
-            padding: theme.spacing(1),
+            // padding: theme.spacing(1),
             [theme.breakpoints.up('xs')]: {
-                fontSize: 40,
+                fontSize: 30,
             },
             [theme.breakpoints.up('sm')]: {
-                fontSize: 70,
-            },
-            [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
-            [theme.breakpoints.up('lg')]: {
-                fontSize: 100,
+            [theme.breakpoints.up('md')]: {
+                fontSize: 60,
             },
+            // [theme.breakpoints.up('lg')]: {
+            //     fontSize: 100,
+            // },
         }
     }),
 );
@@ -42,12 +42,12 @@ const BoardList: React.FC<{}> = (props) => {
     console.log(cellNumbers);
 
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up('sm'));
+    // const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
     return (
         <div className={classes.root}>
 
-            <GridList style={{ border: "1px solid black" }} cols={8}>
+            <GridList style={{ border: "3px solid black" }} cols={8} cellHeight="auto">
                 {cellNumbers.map((cellNumber) => {
                     const rowNumber = Math.floor(cellNumber / 8);
                     const rowCellNumber = cellNumber % 8

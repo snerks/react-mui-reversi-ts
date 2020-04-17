@@ -1,13 +1,13 @@
 import React from "react";
-import { Paper, Grid, GridList, GridListTile, makeStyles, createStyles } from "@material-ui/core";
+import { GridList, GridListTile, makeStyles, createStyles } from "@material-ui/core";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+// import { useTheme } from '@material-ui/core/styles';
+// import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
-            backgroundColor: "white",
+            // backgroundColor: "white",
             margin: "15px 0"
         },
         cell: {
@@ -20,13 +20,13 @@ const useStyles = makeStyles((theme) =>
         token: {
             padding: theme.spacing(1),
             [theme.breakpoints.up('xs')]: {
-                fontSize: 30,
+                fontSize: 20,
             },
             [theme.breakpoints.up('sm')]: {
                 fontSize: 40,
             },
             [theme.breakpoints.up('md')]: {
-                fontSize: 60,
+                fontSize: 40,
             },
             // [theme.breakpoints.up('lg')]: {
             //     fontSize: 100,
@@ -39,9 +39,9 @@ const BoardList: React.FC<{}> = (props) => {
     const classes = useStyles();
     const cellNumbers = Array.from(Array(64)).map((e, i) => i);
 
-    console.log(cellNumbers);
+    // console.log(cellNumbers);
 
-    const theme = useTheme();
+    // const theme = useTheme();
     // const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
     return (
@@ -49,7 +49,7 @@ const BoardList: React.FC<{}> = (props) => {
 
             <GridList cols={8} cellHeight="auto">
                 {cellNumbers.map((cellNumber) => {
-                    const rowNumber = Math.floor(cellNumber / 8);
+                    // const rowNumber = Math.floor(cellNumber / 8);
                     const rowCellNumber = cellNumber % 8
                     const cellColor = rowCellNumber % 2 === 0 ? "black" : "white";
 

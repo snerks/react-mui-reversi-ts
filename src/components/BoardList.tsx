@@ -7,7 +7,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
-            backgroundColor: "black",
+            backgroundColor: "white",
             margin: "15px 0"
         },
         cell: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) =>
             alignItems: "center"
         },
         token: {
-            // padding: theme.spacing(1),
+            padding: theme.spacing(1),
             [theme.breakpoints.up('xs')]: {
                 fontSize: 30,
             },
@@ -47,7 +47,7 @@ const BoardList: React.FC<{}> = (props) => {
     return (
         <div className={classes.root}>
 
-            <GridList style={{ border: "3px solid black" }} cols={8} cellHeight="auto">
+            <GridList cols={8} cellHeight="auto">
                 {cellNumbers.map((cellNumber) => {
                     const rowNumber = Math.floor(cellNumber / 8);
                     const rowCellNumber = cellNumber % 8

@@ -49,21 +49,21 @@ function App() {
             </Grid>
           </Grid> */}
           <Grid item container>
-            <Grid item xs={3} />
-            <Grid item xs={6} alignItems="center" alignContent="space-between" container spacing={3}>
+            <Grid item xs={1} sm={2} />
+            <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between">
               <Button variant="contained" color="primary" fullWidth style={{ margin: 3 }}>
                 Restart
-                </Button>
+              </Button>
 
               <Button variant="contained" color="default" fullWidth style={{ margin: 3 }}>
-                Select Random Valid Cell
-                </Button>
+                Select Random Cell
+              </Button>
 
               <Button variant="contained" color="default" fullWidth style={{ margin: 3 }}>
                 Pass
-                </Button>
+              </Button>
             </Grid>
-            <Grid item xs={3} />
+            <Grid item xs={1} sm={2} />
           </Grid>
         </Grid>
       </Paper>

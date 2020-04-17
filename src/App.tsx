@@ -5,7 +5,7 @@ import BoardList from './components/BoardList';
 
 function App() {
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   const theme = createMuiTheme({
     palette: {

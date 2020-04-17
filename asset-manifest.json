@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/react-mui-reversi-ts/static/css/main.01a5ae9e.chunk.css",
-    "main.js": "/react-mui-reversi-ts/static/js/main.752aab93.chunk.js",
-    "main.js.map": "/react-mui-reversi-ts/static/js/main.752aab93.chunk.js.map",
+    "main.js": "/react-mui-reversi-ts/static/js/main.876b5632.chunk.js",
+    "main.js.map": "/react-mui-reversi-ts/static/js/main.876b5632.chunk.js.map",
     "runtime-main.js": "/react-mui-reversi-ts/static/js/runtime-main.5dd7ca8b.js",
     "runtime-main.js.map": "/react-mui-reversi-ts/static/js/runtime-main.5dd7ca8b.js.map",
     "static/js/2.c73808c1.chunk.js": "/react-mui-reversi-ts/static/js/2.c73808c1.chunk.js",
     "static/js/2.c73808c1.chunk.js.map": "/react-mui-reversi-ts/static/js/2.c73808c1.chunk.js.map",
     "index.html": "/react-mui-reversi-ts/index.html",
-    "precache-manifest.2a2f60028d7ba29287e130b07089b5a9.js": "/react-mui-reversi-ts/precache-manifest.2a2f60028d7ba29287e130b07089b5a9.js",
+    "precache-manifest.23365e492c3fcb821ccb62d2ff8bf58c.js": "/react-mui-reversi-ts/precache-manifest.23365e492c3fcb821ccb62d2ff8bf58c.js",
     "service-worker.js": "/react-mui-reversi-ts/service-worker.js",
     "static/css/main.01a5ae9e.chunk.css.map": "/react-mui-reversi-ts/static/css/main.01a5ae9e.chunk.css.map",
     "static/js/2.c73808c1.chunk.js.LICENSE.txt": "/react-mui-reversi-ts/static/js/2.c73808c1.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.5dd7ca8b.js",
     "static/js/2.c73808c1.chunk.js",
     "static/css/main.01a5ae9e.chunk.css",
-    "static/js/main.752aab93.chunk.js"
+    "static/js/main.876b5632.chunk.js"
   ]
 }

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) =>
         token: {
             padding: theme.spacing(1),
             [theme.breakpoints.up('xs')]: {
-                fontSize: 20,
+                fontSize: 17,
             },
             [theme.breakpoints.up('sm')]: {
                 fontSize: 40,

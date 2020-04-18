@@ -2,8 +2,23 @@ import React, {
     useState, /*, useEffect */
     useEffect
 } from "react";
-import { GridList, GridListTile, makeStyles, createStyles, Grid, Button } from "@material-ui/core";
-// import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import {
+    GridList,
+    GridListTile,
+    makeStyles,
+    createStyles,
+    Grid,
+    Button,
+    BottomNavigation,
+    BottomNavigationAction,
+    Badge
+} from "@material-ui/core";
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import RestoreIcon from '@material-ui/icons/Restore';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import ShuffleIcon from '@material-ui/icons/Shuffle';
+import SentimentVeryDissatisfied from '@material-ui/icons/SentimentVeryDissatisfied';
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 import GameCell from "./GameCell";
 // import { GameBoardState } from "./GameBoard";
@@ -451,7 +466,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
     console.log("validCells", validCells);
 
     const currentPlayerContent = (
-        <div className="row" /* role="alert" */ style={{ background: "green", padding: 15 }}>
+        <div className="row" /* role="alert" */ /* style={{ background: "green", padding: 15 }} */>
             {/* {
                 isGameFinished &&
                 <div className="col-md-12">
@@ -484,7 +499,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     <div>Black: <span>{blackPlayerCells.length}</span></div>
                 </div>
             </div> */}
-
+            {/* 
             {
                 isGameFinished &&
                 <Grid item container>
@@ -498,9 +513,9 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     </Grid>
                     <Grid item xs={1} sm={2} />
                 </Grid>
-            }
+            } */}
 
-            {
+            {/* {
                 isGameFinished && passCount > 1 &&
                 <Grid item container>
                     <Grid item xs={1} sm={2} />
@@ -513,9 +528,9 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     </Grid>
                     <Grid item xs={1} sm={2} />
                 </Grid>
-            }
+            } */}
 
-            {
+            {/* {
                 !isGameFinished &&
                 <Grid item container>
                     <Grid item xs={1} sm={2} />
@@ -533,9 +548,10 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     </Grid>
                     <Grid item xs={1} sm={2} />
                 </Grid>
-            }
+            } */}
 
-            <Grid item container>
+
+            {/* <Grid item container>
                 <Grid item xs={1} sm={2} />
                 <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
                     <Grid item>
@@ -550,9 +566,9 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     </Grid>
                 </Grid>
                 <Grid item xs={1} sm={2} />
-            </Grid>
+            </Grid> */}
 
-            <Grid item container>
+            {/* <Grid item container>
                 <Grid item xs={1} sm={2} />
                 <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
                     <Grid item>
@@ -567,9 +583,75 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     </Grid>
                 </Grid>
                 <Grid item xs={1} sm={2} />
+            </Grid> */}
+
+            <Grid item container alignItems="center" alignContent="space-between">
+                <Grid item xs={3} />
+                <Grid item xs={3} container>
+                    <Grid item container justify="center">
+                        <Badge color="secondary" showZero badgeContent={whitePlayerCells.length}>
+                            <div style={{ color: "white" }}>
+                                <FiberManualRecordIcon />
+                            </div>
+                        </Badge>
+                    </Grid>
+                </Grid>
+                <Grid item xs={3} container>
+                    <Grid item container justify="center">
+                        <Badge color="secondary" showZero badgeContent={blackPlayerCells.length}>
+                            <div style={{ color: "black" }}>
+                                <FiberManualRecordIcon />
+                            </div>
+                        </Badge>
+                    </Grid>
+                </Grid>
+                <Grid item xs={3} />
             </Grid>
 
-            <Grid item container>
+            {
+                isGameFinished &&
+                <Grid item container alignItems="center" alignContent="space-between">
+                    <Grid item xs={1} sm={2} />
+                    <Grid item xs={10} sm={8} container>
+                        <Grid item>
+                            <div style={{ fontSize: '14px', color: winnerName }}>
+                                <span>Winner is {winnerName}!</span>
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={1} sm={2} />
+                </Grid>
+            }
+            {
+                isGameFinished && passCount > 1 &&
+                <Grid item container>
+                    <Grid item xs={1} sm={2} />
+                    <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
+                        <Grid item>
+                            <div style={{ fontSize: '14px', color: winnerName }}>
+                                <span>Both players have passed - game finished early</span>
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={1} sm={2} />
+                </Grid>
+            }
+
+            {/* <Grid item container>
+                <Grid item xs={1} sm={2} />
+                <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
+                    <Grid item>
+                        <Badge color="secondary" badgeContent={blackPlayerCells.length}>
+                            <div style={{ color: "black" }}>
+                                <FiberManualRecordIcon />
+                            </div>
+                        </Badge>
+                    </Grid>
+                </Grid>
+                <Grid item xs={1} sm={2} />
+            </Grid> */}
+
+            {/* <Grid item container>
                 <Grid item xs={1} sm={2} />
                 <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
                     <Button size="small" variant="contained" color="primary" fullWidth style={{ margin: 3 }} onClick={() => restart()}>
@@ -603,7 +685,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     }
                 </Grid>
                 <Grid item xs={1} sm={2} />
-            </Grid>
+            </Grid> */}
         </div>
     );
 
@@ -644,6 +726,34 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
             <br />
             {currentPlayerContent}
 
+            <BottomNavigation
+                value={null}
+                onChange={(event, newValue) => {
+                    // setValue(newValue);
+                    console.log(newValue);
+
+                    if (newValue === 0) {
+                        restart();
+                        return;
+                    }
+
+                    if (newValue === 1) {
+                        selectRandomValidCell();
+                        return;
+                    }
+
+                    if (newValue === 2) {
+                        pass();
+                        return;
+                    }
+                }}
+                showLabels
+                className={classes.root}
+            >
+                <BottomNavigationAction label="Restart" icon={<RestoreIcon />} />
+                <BottomNavigationAction label="Random" icon={<ShuffleIcon />} />
+                <BottomNavigationAction label="Pass" icon={<SentimentVeryDissatisfied />} />
+            </BottomNavigation>
         </div>
     );
 }

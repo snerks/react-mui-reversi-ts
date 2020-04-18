@@ -1,5 +1,5 @@
 import React, {
-    useState, /*, useEffect */
+    useState,
     useEffect
 } from "react";
 import {
@@ -8,26 +8,20 @@ import {
     makeStyles,
     createStyles,
     Grid,
-    Button,
     BottomNavigation,
     BottomNavigationAction,
     Badge
 } from "@material-ui/core";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import RestoreIcon from '@material-ui/icons/Restore';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import SentimentVeryDissatisfied from '@material-ui/icons/SentimentVeryDissatisfied';
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 import GameCell from "./GameCell";
-// import { GameBoardState } from "./GameBoard";
-// import { GameBoardState } from "./GameBoard";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
-            // backgroundColor: "white",
             margin: "15px 0"
         },
         cell: {
@@ -48,9 +42,9 @@ const useStyles = makeStyles((theme) =>
             [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
-            // [theme.breakpoints.up('lg')]: {
-            //     fontSize: 100,
-            // },
+            [theme.breakpoints.up('lg')]: {
+                fontSize: 100,
+            },
         }
     }),
 );
@@ -425,27 +419,12 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
         handleCellClick(row, column);
     }
 
-    const discColor = currentPlayerIsWhite ? 'white' : 'black';
-
-    const discContent = (
-        <span
-            style={{
-                display: 'inline-block',
-                width: '1em',
-                height: '1em',
-                borderRadius: '0.5em',
-                margin: '0.125em',
-                backgroundColor: discColor
-            }}
-        />
-    );
+    // const discColor = currentPlayerIsWhite ? 'white' : 'black';
 
     const emptyCells = boardState.filter(item => item === undefined);
     const whitePlayerCells = boardState.filter(item => item !== undefined && item);
     const blackPlayerCells = boardState.filter(item => item !== undefined && !item);
 
-    // tslint:disable-next-line:no-console
-    // console.log(`passCount = ${this.state.passCount}`);
     const isGameFinished = (emptyCells.length === 0) || (passCount > 1);
 
     let winnerName: string = '';

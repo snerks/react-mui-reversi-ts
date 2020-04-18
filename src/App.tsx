@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { Paper, Grid, Button, ThemeProvider, createMuiTheme } from "@material-ui/core";
+import { Paper, Grid, ThemeProvider, createMuiTheme } from "@material-ui/core";
 import Header from './components/Header';
-// import BoardList from './components/BoardList';
-// import GamePage from './components/GamePage';
-// import GameBoardList from './components/GameBoardList';
 import GamePageList from './components/GamePageList';
 
 function App() {
@@ -24,15 +21,6 @@ function App() {
             <Grid item>
               <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
             </Grid>
-            {/* <Grid item>
-            <Card>
-              <CardContent>
-                <Typography variant="body1" gutterBottom>
-                  Sample application, implemented in React, Material UI and TypeScript. Also supports Dark theme switching.
-              </Typography>
-              </CardContent>
-            </Card>
-          </Grid> */}
             <Grid item container>
               <Grid item xs={1} sm={2} />
               <Grid item xs={10} sm={8}>
@@ -41,17 +29,6 @@ function App() {
               </Grid>
               <Grid item xs={1} sm={2} />
             </Grid>
-            {/* <Grid item container>
-            <Grid item xs={12}>
-              <Card>
-                <CardContent>
-                  <Typography variant="body1">
-                    Sample application, implemented in React, Material UI and TypeScript. Also supports Dark theme switching.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid> */}
           </Grid>
         </div>
       </Paper>

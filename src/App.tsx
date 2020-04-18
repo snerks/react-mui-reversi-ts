@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Paper, Grid, Button, ThemeProvider, createMuiTheme } from "@material-ui/core";
 import Header from './components/Header';
-import BoardList from './components/BoardList';
+// import BoardList from './components/BoardList';
+// import GamePage from './components/GamePage';
+// import GameBoardList from './components/GameBoardList';
+import GamePageList from './components/GamePageList';
 
 function App() {
 
@@ -33,7 +36,8 @@ function App() {
             <Grid item container>
               <Grid item xs={1} sm={2} />
               <Grid item xs={10} sm={8}>
-                <BoardList />
+                {/* <BoardList /> */}
+                <GamePageList />
               </Grid>
               <Grid item xs={1} sm={2} />
             </Grid>

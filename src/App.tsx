@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Paper, Grid, ThemeProvider, createMuiTheme } from "@material-ui/core";
 import Header from './components/Header';
 import GamePageList from './components/GamePageList';
+import { green } from '@material-ui/core/colors';
 
 function App() {
 
@@ -10,6 +11,9 @@ function App() {
   const theme = createMuiTheme({
     palette: {
       type: isDarkMode ? "dark" : "light",
+
+      primary: green,
+      secondary: green,
     }
   });
 

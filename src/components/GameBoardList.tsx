@@ -10,7 +10,8 @@ import {
     Grid,
     BottomNavigation,
     BottomNavigationAction,
-    Badge
+    Badge,
+    Paper
 } from "@material-ui/core";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import RestoreIcon from '@material-ui/icons/Restore';
@@ -19,8 +20,17 @@ import SentimentVeryDissatisfied from '@material-ui/icons/SentimentVeryDissatisf
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 import GameCell from "./GameCell";
 
-const useStyles = makeStyles((theme) =>
-    createStyles({
+const useStyles = makeStyles((theme) => {
+    // const bgColor = theme.palette.type === "light" ? "blue" : undefined;
+
+    const bgColor =
+        theme.palette.type === "light" ?
+            theme.palette.primary.main :
+            undefined;
+
+    // const bgColor = theme.palette.primary.main;
+
+    return createStyles({
         root: {
             margin: "15px 0"
         },
@@ -45,8 +55,13 @@ const useStyles = makeStyles((theme) =>
             [theme.breakpoints.up('lg')]: {
                 fontSize: 100,
             },
+        },
+        currentCountContainer: {
+            padding: "20px 0 10px 0",
+            backgroundColor: bgColor
         }
-    }),
+    });
+}
 );
 
 export const initialGameBoard: GameCellIsWhiteStatus[] = [
@@ -75,12 +90,10 @@ interface GameBoardListProps {
 
 const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
     const classes = useStyles();
-    // const cellNumbers = Array.from(board).map((e, i) => i);
 
     const [cellNumbers] = useState(Array.from(initialBoard).map((e, i) => i));
     const [boardState, setBoardState] = useState(initialBoard);
     const [currentPlayerIsWhite, setCurrentPlayerIsWhite] = useState(false);
-    // const [validCells, setValidCells] = useState<number[]>([]);
     const [passCount, setPassCount] = useState(0);
 
     console.log("currentPlayerIsWhite", currentPlayerIsWhite);
@@ -130,7 +143,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                         adjacentOpponentCellCount++;
                         adjacentOppentCellIndices.push(currentAdjacentCellStatusAndIndex.index);
                     } else {
-                        // Is current player cell
+                        // Is current player's cell
                         if (adjacentOpponentCellCount > 0) {
                             result = [
                                 ...result,
@@ -180,7 +193,6 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
         const candidateCellLineItemIndex =
             getBoardCellIndex(candidateCellLineItemRowIndex, candidateCellLineItemColumnIndex);
 
-        // const candidateCellLineItemIsWhiteStatus = state.board[candidateCellLineItemIndex];
         const candidateCellLineItemIsWhiteStatus = boardState[candidateCellLineItemIndex];
 
         return {
@@ -294,7 +306,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                         if (adjacentCellIsOpponentCell) {
                             adjacentOpponentCellCount++;
                         } else {
-                            // Is current player cell
+                            // Is current player's cell
                             if (adjacentOpponentCellCount > 0) {
                                 emptyCellsWithAdjacentOpponentCell.push(emptyCellStatusAndIndexItem);
                             }
@@ -335,64 +347,21 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
             }
         }
 
-        // const validCells = getValidCells(nextBoard, !currentPlayerIsWhite);
-
         setBoardState(nextBoard);
         setCurrentPlayerIsWhite(!currentPlayerIsWhite);
-        // setValidCells(validCells);
         setPassCount(0);
 
         console.log("handleCellClick : End", row, column);
     }
 
     const restart = () => {
-        // const nextState = {
-        //     board: initialGameBoard,
-        //     currentPlayerIsWhite: false,
-        //     validCells: [],
-        //     passCount: 0
-        // };
-
-        // const nextStateValidCells = getValidCells(initialGameBoard);
-
-        // this.setState({
-        //     board: nextState.board,
-        //     currentPlayerIsWhite: nextState.currentPlayerIsWhite,
-        //     validCells: nextStateValidCells,
-        //     passCount: 0
-        // });
-
         setBoardState(initialGameBoard);
         setCurrentPlayerIsWhite(false);
-        // setValidCells(nextStateValidCells);
-        // validCells = getValidCells(boardState);
         setPassCount(0);
     }
 
     const pass = () => {
-        // tslint:disable-next-line:no-console
-        // console.log(`pass: currentPlayerIsWhite = ${this.state.currentPlayerIsWhite}`);
-
-        // const nextState = {
-        //     board: board,
-        //     currentPlayerIsWhite: !currentPlayerIsWhite,
-        //     validCells: [],
-        //     passCount: passCount + 1
-        // };
-
-        // const nextStateValidCells = getValidCells(boardState);
-
-        // this.setState({
-        //     board: nextState.board,
-        //     currentPlayerIsWhite: nextState.currentPlayerIsWhite,
-        //     validCells: nextStateValidCells,
-        //     passCount: nextState.passCount
-        // });
-
-        // setBoardState(board);
         setCurrentPlayerIsWhite(!currentPlayerIsWhite);
-        // setValidCells(nextStateValidCells);
-        // validCells = getValidCells(boardState);
         setPassCount(passCount + 1);
     }
 
@@ -406,8 +375,6 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
     const selectRandomValidCell = () => {
         const validCells = getValidCellIndices(boardState, currentPlayerIsWhite);
         if (validCells.length === 0) {
-            // tslint:disable-next-line:no-console
-            // console.log('No valid cell is available - passing');
             pass();
             return;
         }
@@ -418,8 +385,6 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
 
         handleCellClick(row, column);
     }
-
-    // const discColor = currentPlayerIsWhite ? 'white' : 'black';
 
     const emptyCells = boardState.filter(item => item === undefined);
     const whitePlayerCells = boardState.filter(item => item !== undefined && item);
@@ -445,125 +410,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
     console.log("validCells", validCells);
 
     const currentPlayerContent = (
-        <div className="row" /* role="alert" */ /* style={{ background: "green", padding: 15 }} */>
-            {/* {
-                isGameFinished &&
-                <div className="col-md-12">
-                    <div style={{ fontSize: '20px', color: winnerName }}>
-                        <span>Winner is {winnerName}!</span>
-                    </div>
-                </div>
-            }
-            {
-                isGameFinished && passCount > 1 &&
-                <div className="col-md-12">
-                    <div style={{ fontSize: '20px', color: winnerName }}>
-                        <span>Both players have passed - game finished early</span>
-                    </div>
-                </div>
-            } */}
-            {/* {
-                !isGameFinished &&
-                <div className="col-md-12">
-                    <div style={{ fontSize: '20px', color: discColor }}>
-                        <span>Current Player: {discContent}</span>
-                    </div>
-                </div>
-            }
-            <div className="col-md-12">
-                <div style={{ fontSize: '20px', color: 'white' }}>
-                    <div>White: <span>{whitePlayerCells.length}</span></div>
-                </div>
-                <div style={{ fontSize: '20px', color: 'black' }}>
-                    <div>Black: <span>{blackPlayerCells.length}</span></div>
-                </div>
-            </div> */}
-            {/* 
-            {
-                isGameFinished &&
-                <Grid item container>
-                    <Grid item xs={1} sm={2} />
-                    <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
-                        <Grid item>
-                            <div style={{ fontSize: '20px', color: winnerName }}>
-                                <span>Winner is {winnerName}!</span>
-                            </div>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={1} sm={2} />
-                </Grid>
-            } */}
-
-            {/* {
-                isGameFinished && passCount > 1 &&
-                <Grid item container>
-                    <Grid item xs={1} sm={2} />
-                    <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
-                        <Grid item>
-                            <div style={{ fontSize: '20px', color: winnerName }}>
-                                <span>Both players have passed - game finished early</span>
-                            </div>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={1} sm={2} />
-                </Grid>
-            } */}
-
-            {/* {
-                !isGameFinished &&
-                <Grid item container>
-                    <Grid item xs={1} sm={2} />
-                    <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
-                        <Grid item>
-                            <div style={{ fontSize: '20px', color: discColor }}>
-                                <span>Current Player: </span>
-                            </div>
-                        </Grid>
-                        <Grid item>
-                            <div style={{ fontSize: '20px', color: discColor }}>
-                                <span>{discContent}</span>
-                            </div>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={1} sm={2} />
-                </Grid>
-            } */}
-
-
-            {/* <Grid item container>
-                <Grid item xs={1} sm={2} />
-                <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
-                    <Grid item>
-                        <div style={{ fontSize: '20px', color: 'white' }}>
-                            <div>White:</div>
-                        </div>
-                    </Grid>
-                    <Grid item>
-                        <div style={{ fontSize: '20px', color: 'white' }}>
-                            <div><span>{whitePlayerCells.length}</span></div>
-                        </div>
-                    </Grid>
-                </Grid>
-                <Grid item xs={1} sm={2} />
-            </Grid> */}
-
-            {/* <Grid item container>
-                <Grid item xs={1} sm={2} />
-                <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
-                    <Grid item>
-                        <div style={{ fontSize: '20px', color: 'black' }}>
-                            <div>Black:</div>
-                        </div>
-                    </Grid>
-                    <Grid item>
-                        <div style={{ fontSize: '20px', color: 'black' }}>
-                            <div><span>{blackPlayerCells.length}</span></div>
-                        </div>
-                    </Grid>
-                </Grid>
-                <Grid item xs={1} sm={2} />
-            </Grid> */}
-
+        <div className={classes.currentCountContainer} /* role="alert" */ /* style={{ background: "green", padding: 15 }} */>
             <Grid item container alignItems="center" alignContent="space-between">
                 <Grid item xs={3} />
                 <Grid item xs={3} container>
@@ -615,56 +462,6 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     <Grid item xs={1} sm={2} />
                 </Grid>
             }
-
-            {/* <Grid item container>
-                <Grid item xs={1} sm={2} />
-                <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
-                    <Grid item>
-                        <Badge color="secondary" badgeContent={blackPlayerCells.length}>
-                            <div style={{ color: "black" }}>
-                                <FiberManualRecordIcon />
-                            </div>
-                        </Badge>
-                    </Grid>
-                </Grid>
-                <Grid item xs={1} sm={2} />
-            </Grid> */}
-
-            {/* <Grid item container>
-                <Grid item xs={1} sm={2} />
-                <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
-                    <Button size="small" variant="contained" color="primary" fullWidth style={{ margin: 3 }} onClick={() => restart()}>
-                        Restart
-                    </Button>
-
-                    {
-                        !isGameFinished &&
-                        <>
-                            <Button size="small" variant="contained" color="default" fullWidth
-                                style={{
-                                    margin: 3,
-                                    cursor: validCells.length === 0 ?
-                                        'not-allowed' : 'auto'
-                                }}
-                                disabled={validCells.length === 0}
-                                onClick={() => selectRandomValidCell()}>
-                                Select Random Cell
-                            </Button>
-
-                            <Button size="small" variant="contained" color="default" fullWidth style={{ margin: 3 }}
-                                onClick={() => pass()}>
-                                {
-                                    validCells.length === 0 && (
-                                        <span style={{ color: 'black' }}>No valid moves: </span>
-                                    )
-                                }
-                                <span>Pass</span>
-                            </Button>
-                        </>
-                    }
-                </Grid>
-                <Grid item xs={1} sm={2} />
-            </Grid> */}
         </div>
     );
 
@@ -675,7 +472,6 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                 {cellNumbers.map((cellNumber) => {
                     const rowNumber = Math.floor(cellNumber / 8);
                     const rowCellNumber = cellNumber % 8
-                    // const cellColor = rowCellNumber % 2 === 0 ? "black" : "white";
 
                     const isValidCell = validCells.indexOf(cellNumber) > -1;
 

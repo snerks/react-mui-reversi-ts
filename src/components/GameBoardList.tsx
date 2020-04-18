@@ -627,8 +627,8 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                 <Grid item container>
                     <Grid item xs={1} sm={2} />
                     <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
-                        <Grid item>
-                            <div style={{ fontSize: '14px', color: winnerName }}>
+                        <Grid container justify="center">
+                            <div style={{ fontSize: '14px' }}>
                                 <span>Both players have passed - game finished early</span>
                             </div>
                         </Grid>

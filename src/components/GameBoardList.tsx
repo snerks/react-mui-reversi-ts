@@ -613,8 +613,8 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                 <Grid item container alignItems="center" alignContent="space-between">
                     <Grid item xs={1} sm={2} />
                     <Grid item xs={10} sm={8} container>
-                        <Grid item>
-                            <div style={{ fontSize: '14px', color: winnerName }}>
+                        <Grid container justify="center">
+                            <div style={{ fontSize: '14px' }}>
                                 <span>Winner is {winnerName}!</span>
                             </div>
                         </Grid>
@@ -751,8 +751,22 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                 className={classes.root}
             >
                 <BottomNavigationAction label="Restart" icon={<RestoreIcon />} />
-                <BottomNavigationAction label="Random" icon={<ShuffleIcon />} />
-                <BottomNavigationAction label="Pass" icon={<SentimentVeryDissatisfied />} />
+
+                {
+                    !isGameFinished &&
+                    validCells.length > 0 &&
+                    <BottomNavigationAction
+                        label="Random"
+                        icon={<ShuffleIcon />}
+                    />
+                }
+
+                {
+                    !isGameFinished &&
+                    <BottomNavigationAction
+                        label={validCells.length === 0 ? "Must Pass!" : "Pass"}
+                        icon={<SentimentVeryDissatisfied />} />
+                }
             </BottomNavigation>
         </div>
     );

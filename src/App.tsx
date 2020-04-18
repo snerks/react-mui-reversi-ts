@@ -52,23 +52,6 @@ function App() {
               </Card>
             </Grid>
           </Grid> */}
-            <Grid item container>
-              <Grid item xs={1} sm={2} />
-              <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
-                <Button size="small" variant="contained" color="primary" fullWidth style={{ margin: 3 }}>
-                  Restart
-              </Button>
-
-                <Button size="small" variant="contained" color="default" fullWidth style={{ margin: 3 }}>
-                  Select Random Cell
-              </Button>
-
-                <Button size="small" variant="contained" color="default" fullWidth style={{ margin: 3 }}>
-                  Pass
-              </Button>
-              </Grid>
-              <Grid item xs={1} sm={2} />
-            </Grid>
           </Grid>
         </div>
       </Paper>

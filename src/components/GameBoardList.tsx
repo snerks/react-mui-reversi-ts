@@ -1,5 +1,8 @@
-import React, { useState /*, useEffect */ } from "react";
-import { GridList, GridListTile, makeStyles, createStyles } from "@material-ui/core";
+import React, {
+    useState, /*, useEffect */
+    useEffect
+} from "react";
+import { GridList, GridListTile, makeStyles, createStyles, Grid, Button } from "@material-ui/core";
 // import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 import GameCell from "./GameCell";
@@ -73,26 +76,16 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
 
     console.log("currentPlayerIsWhite", currentPlayerIsWhite);
 
-    // let validCells: number[] = [];
+    useEffect(() => {
+        console.log("useEffect : currentPlayerIsWhite : ", currentPlayerIsWhite);
 
-    // useEffect(() => {
-    //     console.log("useEffect : boardState");
+        // Computer plays as white
+        if (currentPlayerIsWhite) {
+            selectRandomValidCell();
+            return;
+        }
 
-    //     // const validCellsTemp = getValidCells(boardState);
-    //     // setValidCells(validCellsTemp);
-    //     // console.log("useEffect : boardState : validCells : ", validCellsTemp);
-    // }, [boardState]);
-
-    // useEffect(() => {
-    //     console.log("useEffect : currentPlayerIsWhite : ", currentPlayerIsWhite);
-    //     // Computer plays as white
-    //     if (currentPlayerIsWhite) {
-    //         selectRandomValidCell();
-    //         return;
-    //     }
-    //     // const validCells = getValidCells(boardState);
-    //     // setValidCells(validCells);
-    // }, [currentPlayerIsWhite]);
+    }, [currentPlayerIsWhite]);
 
     const getCapturedCellIndices = (currentPlayerIsWhite: boolean, boardCellIndex: number): number[] => {
         let result: number[] = [];
@@ -238,74 +231,6 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
 
         return result;
     }
-
-    // const getValidCells = (boardState: GameCellIsWhiteStatus[]): number[] => {
-
-    //     const emptyCells = boardState.map(
-    //         (gameCellIsWhiteStatus: GameCellIsWhiteStatus, index: number): CellStatusAndIndex => {
-    //             const isEmptyCell = gameCellIsWhiteStatus === undefined;
-
-    //             if (isEmptyCell) {
-    //                 return {
-    //                     status: gameCellIsWhiteStatus,
-    //                     index
-    //                 };
-    //             }
-
-    //             return {
-    //                 status: gameCellIsWhiteStatus,
-    //                 index: -1
-    //             };
-    //         });
-
-    //     const emptyCellsOnly = emptyCells.filter(emptyCell => emptyCell.index > -1);
-
-    //     const emptyCellsWithAdjacentOpponentCell: CellStatusAndIndex[] = [];
-
-    //     for (let emptyCell of emptyCellsOnly) {
-    //         const column = emptyCell.index % 8;
-    //         const row = (emptyCell.index - column) / 8;
-
-    //         const adjacentCellLines = getAdjacentCellLines(row, column);
-
-    //         for (let adjacentCellLine of adjacentCellLines) {
-    //             if (adjacentCellLine.items.length) {
-
-    //                 let adjacentOpponentCellCount = 0;
-
-    //                 for (let i = 0; i < adjacentCellLine.items.length; i++) {
-    //                     let currentAdjacentCellStatusAndIndex = adjacentCellLine.items[i];
-
-    //                     let adjacentCellIsWhiteStatus = currentAdjacentCellStatusAndIndex.status;
-    //                     let adjacentCellIsPopulated = adjacentCellIsWhiteStatus !== undefined;
-
-    //                     if (!adjacentCellIsPopulated) {
-    //                         break;
-    //                     }
-
-    //                     let adjacentCellIsOpponentCell = (
-    //                         adjacentCellIsPopulated &&
-    //                             currentPlayerIsWhite ?
-    //                             !adjacentCellIsWhiteStatus : adjacentCellIsWhiteStatus
-    //                     );
-
-    //                     if (adjacentCellIsOpponentCell) {
-    //                         adjacentOpponentCellCount++;
-    //                     } else {
-    //                         // Is current player cell
-    //                         if (adjacentOpponentCellCount > 0) {
-    //                             emptyCellsWithAdjacentOpponentCell.push(emptyCell);
-    //                         }
-
-    //                         break;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     return emptyCellsWithAdjacentOpponentCell.map(emptyCell => emptyCell.index);
-    // }
 
     const getValidCellIndices = (board: GameCellIsWhiteStatus[], currentPlayerIsWhite: boolean): number[] => {
 
@@ -525,85 +450,162 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
     console.log("currentPlayerIsWhite", currentPlayerIsWhite);
     console.log("validCells", validCells);
 
-    // const currentPlayerContent = (
-    //     <div className="row" /* role="alert" */ style={{ background: '#090' }}>
-    //         {
-    //             isGameFinished &&
-    //             <div className="col-md-12">
-    //                 <div style={{ fontSize: '20px', color: winnerName }}>
-    //                     <span>Winner is {winnerName}!</span>
-    //                 </div>
-    //             </div>
-    //         }
-    //         {
-    //             isGameFinished && passCount > 1 &&
-    //             <div className="col-md-12">
-    //                 <div style={{ fontSize: '20px', color: winnerName }}>
-    //                     <span>Both players have passed - game finished early</span>
-    //                 </div>
-    //             </div>
-    //         }
-    //         {
-    //             !isGameFinished &&
-    //             <div className="col-md-12">
-    //                 <div style={{ fontSize: '20px', color: discColor }}>
-    //                     <span>Current Player: {discContent}</span>
-    //                 </div>
-    //             </div>
-    //         }
-    //         <div className="col-md-12">
-    //             <div style={{ fontSize: '20px', color: 'white' }}>
-    //                 <div>White: <span>{whitePlayerCells.length}</span></div>
-    //             </div>
-    //             <div style={{ fontSize: '20px', color: 'black' }}>
-    //                 <div>Black: <span>{blackPlayerCells.length}</span></div>
-    //             </div>
-    //         </div>
-    //         <div className="col-md-12" style={{ fontSize: '20px' }}>
-    //             <div className="row">
-    //                 <div className="col-md-12">
-    //                     <button
-    //                         onClick={() => restart()}
-    //                         style={{ width: '400px', margin: '5px' }}
-    //                     >
-    //                         Restart
-    //                     </button>
-    //                 </div>
-    //                 {
-    //                     !isGameFinished &&
-    //                     <div className="row">
-    //                         <div className="col-md-12">
-    //                             <button
-    //                                 onClick={() => selectRandomValidCell()}
-    //                                 style={{
-    //                                     width: '400px', margin: '5px',
-    //                                     cursor: validCells.length === 0 ?
-    //                                         'not-allowed' : 'auto'
-    //                                 }}
-    //                                 disabled={validCells.length === 0}
-    //                             >
-    //                                 Select Random Valid Cell
-    //                             </button>
-    //                         </div>
-    //                         <div className="col-md-12">
-    //                             <button
-    //                                 onClick={() => pass()}
-    //                                 style={{ width: '400px', margin: '5px' }}
-    //                             >
-    //                                 {
-    //                                     validCells.length === 0 && (
-    //                                         <span style={{ color: 'black' }}>No valid moves: </span>
-    //                                     )
-    //                                 }
-    //                                 <span>Pass</span>
-    //                             </button>
-    //                         </div>
-    //                     </div>
-    //                 }
-    //             </div>
-    //         </div>
-    //     </div>
-    // );
+    const currentPlayerContent = (
+        <div className="row" /* role="alert" */ style={{ background: "green", padding: 15 }}>
+            {/* {
+                isGameFinished &&
+                <div className="col-md-12">
+                    <div style={{ fontSize: '20px', color: winnerName }}>
+                        <span>Winner is {winnerName}!</span>
+                    </div>
+                </div>
+            }
+            {
+                isGameFinished && passCount > 1 &&
+                <div className="col-md-12">
+                    <div style={{ fontSize: '20px', color: winnerName }}>
+                        <span>Both players have passed - game finished early</span>
+                    </div>
+                </div>
+            } */}
+            {/* {
+                !isGameFinished &&
+                <div className="col-md-12">
+                    <div style={{ fontSize: '20px', color: discColor }}>
+                        <span>Current Player: {discContent}</span>
+                    </div>
+                </div>
+            }
+            <div className="col-md-12">
+                <div style={{ fontSize: '20px', color: 'white' }}>
+                    <div>White: <span>{whitePlayerCells.length}</span></div>
+                </div>
+                <div style={{ fontSize: '20px', color: 'black' }}>
+                    <div>Black: <span>{blackPlayerCells.length}</span></div>
+                </div>
+            </div> */}
+
+            {
+                isGameFinished &&
+                <Grid item container>
+                    <Grid item xs={1} sm={2} />
+                    <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
+                        <Grid item>
+                            <div style={{ fontSize: '20px', color: winnerName }}>
+                                <span>Winner is {winnerName}!</span>
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={1} sm={2} />
+                </Grid>
+            }
+
+            {
+                isGameFinished && passCount > 1 &&
+                <Grid item container>
+                    <Grid item xs={1} sm={2} />
+                    <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
+                        <Grid item>
+                            <div style={{ fontSize: '20px', color: winnerName }}>
+                                <span>Both players have passed - game finished early</span>
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={1} sm={2} />
+                </Grid>
+            }
+
+            {
+                !isGameFinished &&
+                <Grid item container>
+                    <Grid item xs={1} sm={2} />
+                    <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
+                        <Grid item>
+                            <div style={{ fontSize: '20px', color: discColor }}>
+                                <span>Current Player: </span>
+                            </div>
+                        </Grid>
+                        <Grid item>
+                            <div style={{ fontSize: '20px', color: discColor }}>
+                                <span>{discContent}</span>
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={1} sm={2} />
+                </Grid>
+            }
+
+            <Grid item container>
+                <Grid item xs={1} sm={2} />
+                <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
+                    <Grid item>
+                        <div style={{ fontSize: '20px', color: 'white' }}>
+                            <div>White:</div>
+                        </div>
+                    </Grid>
+                    <Grid item>
+                        <div style={{ fontSize: '20px', color: 'white' }}>
+                            <div><span>{whitePlayerCells.length}</span></div>
+                        </div>
+                    </Grid>
+                </Grid>
+                <Grid item xs={1} sm={2} />
+            </Grid>
+
+            <Grid item container>
+                <Grid item xs={1} sm={2} />
+                <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
+                    <Grid item>
+                        <div style={{ fontSize: '20px', color: 'black' }}>
+                            <div>Black:</div>
+                        </div>
+                    </Grid>
+                    <Grid item>
+                        <div style={{ fontSize: '20px', color: 'black' }}>
+                            <div><span>{blackPlayerCells.length}</span></div>
+                        </div>
+                    </Grid>
+                </Grid>
+                <Grid item xs={1} sm={2} />
+            </Grid>
+
+            <Grid item container>
+                <Grid item xs={1} sm={2} />
+                <Grid item xs={10} sm={8} alignItems="center" alignContent="space-between" container>
+                    <Button size="small" variant="contained" color="primary" fullWidth style={{ margin: 3 }} onClick={() => restart()}>
+                        Restart
+                    </Button>
+
+                    {
+                        !isGameFinished &&
+                        <>
+                            <Button size="small" variant="contained" color="default" fullWidth
+                                style={{
+                                    margin: 3,
+                                    cursor: validCells.length === 0 ?
+                                        'not-allowed' : 'auto'
+                                }}
+                                disabled={validCells.length === 0}
+                                onClick={() => selectRandomValidCell()}>
+                                Select Random Cell
+                            </Button>
+
+                            <Button size="small" variant="contained" color="default" fullWidth style={{ margin: 3 }}
+                                onClick={() => pass()}>
+                                {
+                                    validCells.length === 0 && (
+                                        <span style={{ color: 'black' }}>No valid moves: </span>
+                                    )
+                                }
+                                <span>Pass</span>
+                            </Button>
+                        </>
+                    }
+                </Grid>
+                <Grid item xs={1} sm={2} />
+            </Grid>
+        </div>
+    );
 
     return (
         <div className={classes.root}>
@@ -637,7 +639,10 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                 })}
             </GridList>
 
-            <h1>currentPlayerIsWhite = [{currentPlayerIsWhite ? "Yes" : "No"}]</h1>
+            {/* <h1>currentPlayerIsWhite = [{currentPlayerIsWhite ? "Yes" : "No"}]</h1> */}
+
+            <br />
+            {currentPlayerContent}
 
         </div>
     );

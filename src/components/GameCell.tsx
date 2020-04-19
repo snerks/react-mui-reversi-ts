@@ -1,5 +1,6 @@
 import * as React from 'react';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import CheckIcon from '@material-ui/icons/Check';
 import { makeStyles, createStyles } from '@material-ui/core';
 
 export interface GameCellProps {
@@ -54,7 +55,7 @@ const useStyles = makeStyles((theme) =>
                 fontSize: 40,
             },
             [theme.breakpoints.up('lg')]: {
-                fontSize: 45,
+                fontSize: 60,
             },
         }
     })
@@ -70,15 +71,20 @@ const GameCell: React.FC<GameCellProps> = (props) => {
 
     let discColor = isOccupied ? isWhite ? 'white' : 'black' : undefined;
 
+    // &nbsp;
     let emptyCellText = '\u00a0';
 
+    let emptyCellContent =
+        <span className={classes.validCellMarker} style={{ color: discColor }}>{emptyCellText}</span>;
+
     if (!isOccupied && isValid) {
-        emptyCellText = '\u2713';
+        // emptyCellText = '\u2713';
 
         discColor = currentPlayerIsWhite ? 'white' : 'black';
-    }
 
-    const emptyCellContent = <span className={classes.validCellMarker} style={{ color: discColor }}>{emptyCellText}</span>;
+        emptyCellContent =
+            <CheckIcon className={classes.validCellMarker} style={{ color: discColor }} />;
+    }
 
     const discContent = isOccupied ? (
         <FiberManualRecordIcon className={classes.token} style={{ color: discColor }} />

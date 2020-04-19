@@ -10,25 +10,23 @@ import {
     Grid,
     BottomNavigation,
     BottomNavigationAction,
-    Badge,
-    Paper
+    Badge
 } from "@material-ui/core";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import RestoreIcon from '@material-ui/icons/Restore';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
-import SentimentVeryDissatisfied from '@material-ui/icons/SentimentVeryDissatisfied';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 import GameCell from "./GameCell";
+import GameFinishedSnackbar from "./GameFinishedSnackBar";
 
 const useStyles = makeStyles((theme) => {
-    // const bgColor = theme.palette.type === "light" ? "blue" : undefined;
 
     const bgColor =
         theme.palette.type === "light" ?
             theme.palette.primary.main :
             undefined;
-
-    // const bgColor = theme.palette.primary.main;
 
     return createStyles({
         root: {
@@ -540,9 +538,14 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     !isGameFinished &&
                     <BottomNavigationAction
                         label={validCells.length === 0 ? "Must Pass!" : "Pass"}
-                        icon={<SentimentVeryDissatisfied />} />
+                        icon={<SentimentVeryDissatisfiedIcon />} />
                 }
             </BottomNavigation>
+
+            {
+                isGameFinished &&
+                <GameFinishedSnackbar message={`Winner is ${winnerName}!`} />
+            }
         </div>
     );
 }

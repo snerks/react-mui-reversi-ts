@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) =>
         token: {
             // padding: theme.spacing(1),
             [theme.breakpoints.up('xs')]: {
-                fontSize: 30,
+                fontSize: 25,
             },
             [theme.breakpoints.up('sm')]: {
                 fontSize: 30,
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) =>
         validCellMarker: {
             // padding: theme.spacing(1),
             [theme.breakpoints.up('xs')]: {
-                fontSize: 30,
+                fontSize: 25,
             },
             [theme.breakpoints.up('sm')]: {
                 fontSize: 30,

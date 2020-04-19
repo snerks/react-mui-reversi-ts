@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => {
 
     return createStyles({
         root: {
-            margin: "15px 0"
+            margin: "3px 0 0 0"
         },
         cell: {
             display: "flex",

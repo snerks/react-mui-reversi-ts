@@ -30,7 +30,12 @@ const useStyles = makeStyles((theme) => {
 
     return createStyles({
         root: {
-            margin: "3px 0 0 0"
+            [theme.breakpoints.up('xs')]: {
+                margin: "3px 0 0 0"
+            },
+            [theme.breakpoints.up('sm')]: {
+                margin: "15px 0 0 0"
+            },
         },
         cell: {
             display: "flex",

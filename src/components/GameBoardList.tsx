@@ -40,19 +40,19 @@ const useStyles = makeStyles((theme) => {
             alignItems: "center"
         },
         token: {
-            padding: theme.spacing(1),
+            // padding: theme.spacing(1),
             [theme.breakpoints.up('xs')]: {
-                fontSize: 17,
+                fontSize: 30,
             },
-            // [theme.breakpoints.up('sm')]: {
-            //     fontSize: 40,
-            // },
+            [theme.breakpoints.up('sm')]: {
+                fontSize: 30,
+            },
             [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
             [theme.breakpoints.up('lg')]: {
-                fontSize: 100,
-            },
+                fontSize: 60,
+            }
         },
         currentCountContainer: {
             padding: "20px 0 10px 0",
@@ -413,19 +413,15 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                 <Grid item xs={3} />
                 <Grid item xs={3} container>
                     <Grid item container justify="center">
-                        <Badge color="secondary" showZero badgeContent={whitePlayerCells.length}>
-                            <div style={{ color: "white" }}>
-                                <FiberManualRecordIcon />
-                            </div>
+                        <Badge color="secondary" showZero overlap="circle" badgeContent={whitePlayerCells.length}>
+                            <FiberManualRecordIcon className={classes.token} style={{ color: "white" }} />
                         </Badge>
                     </Grid>
                 </Grid>
                 <Grid item xs={3} container>
                     <Grid item container justify="center">
-                        <Badge color="secondary" showZero badgeContent={blackPlayerCells.length}>
-                            <div style={{ color: "black" }}>
-                                <FiberManualRecordIcon />
-                            </div>
+                        <Badge color="secondary" showZero overlap="circle" badgeContent={blackPlayerCells.length}>
+                            <FiberManualRecordIcon className={classes.token} style={{ color: "black" }} />
                         </Badge>
                     </Grid>
                 </Grid>

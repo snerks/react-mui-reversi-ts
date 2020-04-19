@@ -531,9 +531,11 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                 }
 
                 {
+                    // Must play, if valid cells are present
                     !isGameFinished &&
+                    (validCells.length === 0) &&
                     <BottomNavigationAction
-                        label={validCells.length === 0 ? "Must Pass!" : "Pass"}
+                        label="Must Pass!"
                         icon={<SentimentVeryDissatisfiedIcon />} />
                 }
             </BottomNavigation>

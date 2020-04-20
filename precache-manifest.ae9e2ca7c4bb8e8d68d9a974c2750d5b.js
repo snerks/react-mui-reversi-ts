@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d62fd27c156124bcb99923da9f03879b",
+    "revision": "1e49559e58769022b9efbc9936697a9d",
     "url": "/react-mui-reversi-ts/index.html"
   },
   {
-    "revision": "7c98e1fabf2cd7a61383",
+    "revision": "bb742dbb0d677e1ebf00",
     "url": "/react-mui-reversi-ts/static/css/main.01a5ae9e.chunk.css"
   },
   {
-    "revision": "36130773116b4b4794fb",
-    "url": "/react-mui-reversi-ts/static/js/2.2160271f.chunk.js"
+    "revision": "6013d4a87105af650f32",
+    "url": "/react-mui-reversi-ts/static/js/2.b6200469.chunk.js"
   },
   {
     "revision": "0749163b59fbee32225059cb60c18af6",
-    "url": "/react-mui-reversi-ts/static/js/2.2160271f.chunk.js.LICENSE.txt"
+    "url": "/react-mui-reversi-ts/static/js/2.b6200469.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "7c98e1fabf2cd7a61383",
-    "url": "/react-mui-reversi-ts/static/js/main.912265a2.chunk.js"
+    "revision": "bb742dbb0d677e1ebf00",
+    "url": "/react-mui-reversi-ts/static/js/main.e1b961ba.chunk.js"
   },
   {
     "revision": "d705b389f36ee1cf843b",

@@ -299,6 +299,20 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
             </Grid>
 
             {
+                currentPlayerIsWhite &&
+
+                <Grid item container alignItems="center" alignContent="space-between">
+                    <Grid item xs={1} sm={2} />
+                    <Grid item xs={10} sm={8} container>
+                        <Grid container justify="center">
+                            <CircularProgress />
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={1} sm={2} />
+                </Grid>
+            }
+
+            {
                 isGameFinished &&
                 <Grid item container alignItems="center" alignContent="space-between">
                     <Grid item xs={1} sm={2} />
@@ -361,11 +375,6 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
             </GridList>
 
             {/* <h1>currentPlayerIsWhite = [{currentPlayerIsWhite ? "Yes" : "No"}]</h1> */}
-
-            {
-                currentPlayerIsWhite &&
-                <CircularProgress />
-            }
 
             <br />
             {currentPlayerContent}

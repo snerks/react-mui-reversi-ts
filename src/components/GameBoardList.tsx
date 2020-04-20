@@ -288,7 +288,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     <Grid item xs={1} sm={2} />
                     <Grid item xs={10} sm={8} container>
                         <Grid container justify="center">
-                            <CircularProgress color="secondary" />
+                            <CircularProgress color="secondary" size={20} />
                         </Grid>
                     </Grid>
                     <Grid item xs={1} sm={2} />

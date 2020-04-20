@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/react-mui-reversi-ts/static/css/main.01a5ae9e.chunk.css",
-    "main.js": "/react-mui-reversi-ts/static/js/main.d772ebfc.chunk.js",
-    "main.js.map": "/react-mui-reversi-ts/static/js/main.d772ebfc.chunk.js.map",
+    "main.js": "/react-mui-reversi-ts/static/js/main.8beaf4fe.chunk.js",
+    "main.js.map": "/react-mui-reversi-ts/static/js/main.8beaf4fe.chunk.js.map",
     "runtime-main.js": "/react-mui-reversi-ts/static/js/runtime-main.5dd7ca8b.js",
     "runtime-main.js.map": "/react-mui-reversi-ts/static/js/runtime-main.5dd7ca8b.js.map",
-    "static/js/2.845d6ec2.chunk.js": "/react-mui-reversi-ts/static/js/2.845d6ec2.chunk.js",
-    "static/js/2.845d6ec2.chunk.js.map": "/react-mui-reversi-ts/static/js/2.845d6ec2.chunk.js.map",
+    "static/js/2.2e4b5362.chunk.js": "/react-mui-reversi-ts/static/js/2.2e4b5362.chunk.js",
+    "static/js/2.2e4b5362.chunk.js.map": "/react-mui-reversi-ts/static/js/2.2e4b5362.chunk.js.map",
     "index.html": "/react-mui-reversi-ts/index.html",
-    "precache-manifest.ddb08d93f5c9c48c8ee21133ca80161e.js": "/react-mui-reversi-ts/precache-manifest.ddb08d93f5c9c48c8ee21133ca80161e.js",
+    "precache-manifest.c5d4a5535725f3581b98a5d2a60dcf88.js": "/react-mui-reversi-ts/precache-manifest.c5d4a5535725f3581b98a5d2a60dcf88.js",
     "service-worker.js": "/react-mui-reversi-ts/service-worker.js",
     "static/css/main.01a5ae9e.chunk.css.map": "/react-mui-reversi-ts/static/css/main.01a5ae9e.chunk.css.map",
-    "static/js/2.845d6ec2.chunk.js.LICENSE.txt": "/react-mui-reversi-ts/static/js/2.845d6ec2.chunk.js.LICENSE.txt"
+    "static/js/2.2e4b5362.chunk.js.LICENSE.txt": "/react-mui-reversi-ts/static/js/2.2e4b5362.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.5dd7ca8b.js",
-    "static/js/2.845d6ec2.chunk.js",
+    "static/js/2.2e4b5362.chunk.js",
     "static/css/main.01a5ae9e.chunk.css",
-    "static/js/main.d772ebfc.chunk.js"
+    "static/js/main.8beaf4fe.chunk.js"
   ]
 }

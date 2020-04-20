@@ -281,28 +281,29 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
     const currentPlayerContent = (
         <div className={classes.currentCountContainer} /* role="alert" */ /* style={{ background: "green", padding: 15 }} */>
 
-            {
-                currentPlayerIsWhite &&
-
-                <Grid item container alignItems="center" alignContent="space-between">
-                    <Grid item xs={1} sm={2} />
-                    <Grid item xs={10} sm={8} container>
-                        <Grid container justify="center">
-                            <CircularProgress color="secondary" size={20} />
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={1} sm={2} />
-                </Grid>
-            }
-
             <Grid item container alignItems="center" alignContent="space-between">
-                <Grid item xs={3} />
+                <Grid item xs={2} />
                 <Grid item xs={3} container>
                     <Grid item container justify="center">
                         <Badge color="secondary" showZero overlap="circle" badgeContent={whitePlayerCells.length}>
                             <FiberManualRecordIcon className={classes.token} style={{ color: "white" }} />
                         </Badge>
                     </Grid>
+                </Grid>
+                <Grid item xs={2} container>
+                    {
+                        currentPlayerIsWhite &&
+
+                        <Grid item container alignItems="center" alignContent="space-between">
+                            <Grid item xs={1} sm={2} />
+                            <Grid item xs={10} sm={8} container>
+                                <Grid container justify="center">
+                                    <CircularProgress color="secondary" size={20} />
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={1} sm={2} />
+                        </Grid>
+                    }
                 </Grid>
                 <Grid item xs={3} container>
                     <Grid item container justify="center">
@@ -311,7 +312,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                         </Badge>
                     </Grid>
                 </Grid>
-                <Grid item xs={3} />
+                <Grid item xs={2} />
             </Grid>
 
             {

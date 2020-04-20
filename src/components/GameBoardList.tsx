@@ -10,7 +10,8 @@ import {
     Grid,
     BottomNavigation,
     BottomNavigationAction,
-    Badge
+    Badge,
+    CircularProgress
 } from "@material-ui/core";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import RestoreIcon from '@material-ui/icons/Restore';
@@ -360,6 +361,11 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
             </GridList>
 
             {/* <h1>currentPlayerIsWhite = [{currentPlayerIsWhite ? "Yes" : "No"}]</h1> */}
+
+            {
+                currentPlayerIsWhite &&
+                <CircularProgress />
+            }
 
             <br />
             {currentPlayerContent}

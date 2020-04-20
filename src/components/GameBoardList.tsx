@@ -20,7 +20,7 @@ import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissa
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 import GameCell from "./GameCell";
 import GameFinishedSnackbar from "./GameFinishedSnackBar";
-import { getCapturedCellIndices, getBoardCellIndex, getValidCellIndices, getCellRank } from "../services/GameBoardService";
+import { getCapturedCellIndices, getBoardCellIndex, getValidCellIndices, getCellRank, getNextBoardState, alphabeta } from "../services/GameBoardService";
 
 const useStyles = makeStyles((theme) => {
 
@@ -93,14 +93,57 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
 
     console.log("currentPlayerIsWhite", currentPlayerIsWhite);
 
+    // const selectComputedValidCell = () => {
+    //     const validCellOrNull = getComputedValidCellIndex();
+    //     if (validCellOrNull === null) {
+    //         pass();
+    //         return;
+    //     }
+
+    //     const { row, column } = getBoardCellCoords(validCellOrNull);
+
+    //     handleCellClick(row, column);
+    // }
+
+    //     possible_moves = self.get_available_moves(board,self.my_color,self.opponent_color)
+    // for [x, y] in possible_moves:
+    //     new_board = self.make_board_copy(board)
+    //     new_board[x][y] = self.my_color
+    //     new_alpha = self.minmax(new_board,1,alpha,beta)
+    //     if new_alpha > alpha:
+    //         alpha = new_alpha
+    //         best_move = [x,y]
+
     const selectComputedValidCell = () => {
-        const validCellOrNull = getComputedValidCellIndex();
-        if (validCellOrNull === null) {
+        const validCellIndices = getValidCellIndices(boardState, currentPlayerIsWhite);
+        if (validCellIndices.length === 0) {
             pass();
             return;
         }
 
-        const { row, column } = getBoardCellCoords(validCellOrNull);
+        let alpha = -Infinity;
+        const beta = Infinity;
+
+        let validCellIndexOrNull: number | null = null;
+
+        for (let validCellIndex of validCellIndices) {
+            const nextBoardState = getNextBoardState(boardState, currentPlayerIsWhite, validCellIndex);
+
+            const nextAlpha = alphabeta(nextBoardState, 2, alpha, beta, false);
+
+            if (nextAlpha > alpha) {
+                alpha = nextAlpha;
+
+                validCellIndexOrNull = validCellIndex;
+            }
+        }
+
+        if (validCellIndexOrNull === null) {
+            pass();
+            return;
+        }
+
+        const { row, column } = getBoardCellCoords(validCellIndexOrNull);
 
         handleCellClick(row, column);
     }
@@ -119,19 +162,19 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
     const handleCellClick = (row: number, column: number) => {
         console.log("handleCellClick : Start", row, column);
 
-        const boardCellIndex = getBoardCellIndex(row, column);
+        const boardPlacedCellIndex = getBoardCellIndex(row, column);
 
-        console.log("handleCellClick : cellIndex", boardCellIndex);
+        console.log("handleCellClick : boardPlacedCellIndex", boardPlacedCellIndex);
 
         console.log("handleCellClick : currentPlayerIsWhite", currentPlayerIsWhite);
 
         const capturedCellIndices =
-            getCapturedCellIndices(boardState, currentPlayerIsWhite, boardCellIndex);
+            getCapturedCellIndices(boardState, currentPlayerIsWhite, boardPlacedCellIndex);
 
         const nextBoard: GameCellIsWhiteStatus[] = [];
 
         for (let i = 0; i < boardState.length; i++) {
-            if (i === boardCellIndex) {
+            if (i === boardPlacedCellIndex) {
                 nextBoard.push(currentPlayerIsWhite);
             } else {
                 const currentGameCellIsWhiteStatus = boardState[i];

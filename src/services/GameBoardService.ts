@@ -1,6 +1,150 @@
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 
-const cellIndexRankMap = new Map<number, number>()
+// https://stackoverflow.com/questions/40166357/python-reversi-othello-ai-working-under-1-second
+const boardCellScores = [
+  99, -8, 8, 6, 6, 8, -8, 99,
+  -8, -24, -4, -3, -3, -4, -24, -8,
+  8, -4, 7, 4, 4, 7, -4, 8,
+  6, -3, 4, 0, 0, 4, -3, 6,
+  6, -3, 4, 0, 0, 4, -3, 6,
+  8, -4, 7, 4, 4, 7, -4, 8,
+  -8, -24, -4, -3, -3, -4, -24, -8,
+  99, -8, 8, 6, 6, 8, -8, 99
+];
+
+const getHeuristicValue = (
+  boardState: GameCellIsWhiteStatus[],
+  currentPlayerIsWhite: boolean): number => {
+
+  const currentPlayerCellIndices = boardState.map((item, index) => {
+    if (item === undefined) {
+      return -1;
+    }
+
+    const isCurrentPlayerCell = (item === currentPlayerIsWhite);
+
+    if (!isCurrentPlayerCell) {
+      return index;
+    }
+
+    return -1;
+  });
+
+  const currentPlayerPopulatedCellIndices = currentPlayerCellIndices.filter(itemIndex => itemIndex > -1);
+
+  const reducer = (accumulator: number, currentValue: number): number => {
+    return accumulator + boardCellScores[currentValue];
+  }
+
+  const result = currentPlayerPopulatedCellIndices.reduce(reducer, 0);
+
+  return result;
+}
+
+// https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+export const alphabeta = (
+  boardState: GameCellIsWhiteStatus[],
+  depth: number,
+  alpha: number,
+  beta: number,
+  currentPlayerIsWhite: boolean): number => {
+
+  const validCellIndices = getValidCellIndices(boardState, currentPlayerIsWhite);
+  const haveNoValidMoves = validCellIndices.length === 0;
+
+  if (depth === 0 || haveNoValidMoves) {
+    return getHeuristicValue(boardState, currentPlayerIsWhite);
+  }
+
+  let heuristicValue = 0;
+
+  if (currentPlayerIsWhite) {
+    heuristicValue = -Infinity;
+
+    for (let validCellIndex of validCellIndices) {
+      const nextBoardState = getNextBoardState(boardState, currentPlayerIsWhite, validCellIndex);
+      heuristicValue = getHeuristicValue(boardState, currentPlayerIsWhite);
+
+      heuristicValue =
+        Math.max(
+          heuristicValue,
+          alphabeta(nextBoardState, depth - 1, alpha, beta, false));
+
+      const nextAlpha = Math.max(alpha, heuristicValue);
+
+      if (nextAlpha >= beta) {
+        break; // (* β cut - off *)
+      }
+    }
+
+    return heuristicValue;
+  } else {
+    heuristicValue = Infinity;
+
+    // for each child of node do
+    //   value:= min(value, alphabeta(child, depth − 1, alpha, beta, TRUE))
+    //       beta := min(beta, value)
+    // if alpha ≥ beta then
+    // break (* alpha cut - off *)
+    // return value
+
+    for (let validCellIndex of validCellIndices) {
+      const nextBoardState = getNextBoardState(boardState, currentPlayerIsWhite, validCellIndex);
+      heuristicValue = getHeuristicValue(boardState, currentPlayerIsWhite);
+
+      heuristicValue =
+        Math.min(
+          heuristicValue,
+          alphabeta(nextBoardState, depth - 1, alpha, beta, true));
+
+      const nextBeta = Math.min(beta, heuristicValue);
+
+      if (alpha >= nextBeta) {
+        break; // (* alpha cut - off *)
+      }
+    }
+
+    return heuristicValue;
+  }
+}
+
+export const getNextBoardState = (
+  boardState: GameCellIsWhiteStatus[],
+  currentPlayerIsWhite: boolean,
+  boardPlacedCellIndex: number
+): GameCellIsWhiteStatus[] => {
+
+  // console.log("getNextBoardState : Start");
+  // console.log("getNextBoardState : boardState", boardState);
+  // console.log("getNextBoardState : currentPlayerIsWhite", currentPlayerIsWhite);
+  // console.log("getNextBoardState : boardPlacedCellIndex", boardPlacedCellIndex);
+
+  const capturedCellIndices =
+    getCapturedCellIndices(boardState, currentPlayerIsWhite, boardPlacedCellIndex);
+
+  const nextBoard: GameCellIsWhiteStatus[] = [];
+
+  for (let i = 0; i < boardState.length; i++) {
+    if (i === boardPlacedCellIndex) {
+      nextBoard.push(currentPlayerIsWhite);
+    } else {
+      const currentGameCellIsWhiteStatus = boardState[i];
+
+      if (capturedCellIndices.indexOf(i) > -1) {
+        nextBoard.push(currentPlayerIsWhite);
+      } else {
+        nextBoard.push(currentGameCellIsWhiteStatus);
+      }
+    }
+  }
+
+  // console.log("handleCellClick : End : boardPlacedCellIndex", boardPlacedCellIndex);
+
+  return nextBoard;
+}
+
+const cellIndexRankMap = new Map<number, number>();
+
 // Corner
 cellIndexRankMap.set(0, 6);
 cellIndexRankMap.set(7, 6);

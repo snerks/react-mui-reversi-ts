@@ -131,6 +131,8 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
         for (let validCellIndex of validCellIndices) {
             const nextBoardState = getNextBoardState(boardState, currentPlayerIsWhite, validCellIndex);
 
+            console.table(nextBoardState);
+
             const nextAlpha = alphabeta(nextBoardState, 2, alpha, beta, false);
 
             if (nextAlpha > alpha) {

@@ -11,7 +11,8 @@ import {
     BottomNavigation,
     BottomNavigationAction,
     Badge,
-    CircularProgress
+    CircularProgress,
+    LinearProgress
 } from "@material-ui/core";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import RestoreIcon from '@material-ui/icons/Restore';
@@ -287,7 +288,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     <Grid item xs={1} sm={2} />
                     <Grid item xs={10} sm={8} container>
                         <Grid container justify="center">
-                            <CircularProgress />
+                            <LinearProgress />
                         </Grid>
                     </Grid>
                     <Grid item xs={1} sm={2} />

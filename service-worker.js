@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/react-mui-reversi-ts/precache-manifest.9f41df7eaa9aabbd5d4e28ba18ffc843.js"
+  "/react-mui-reversi-ts/precache-manifest.4c0c4c415d0e5b59c0bdc5cd877c4d94.js"
 );
 
 self.addEventListener('message', (event) => {

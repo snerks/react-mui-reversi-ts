@@ -1,5 +1,95 @@
-import { CellStatusAndIndex, CellLine } from "../components/GameBoardList";
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
+
+const cellIndexRankMap = new Map<number, number>()
+// Corner
+cellIndexRankMap.set(0, 6);
+cellIndexRankMap.set(7, 6);
+cellIndexRankMap.set(56, 6);
+cellIndexRankMap.set(63, 6);
+
+// Inner Edges
+cellIndexRankMap.set(2, 5);
+cellIndexRankMap.set(3, 5);
+cellIndexRankMap.set(4, 5);
+cellIndexRankMap.set(5, 5);
+
+cellIndexRankMap.set(16, 5);
+cellIndexRankMap.set(24, 5);
+cellIndexRankMap.set(32, 5);
+cellIndexRankMap.set(40, 5);
+
+cellIndexRankMap.set(23, 5);
+cellIndexRankMap.set(31, 5);
+cellIndexRankMap.set(39, 5);
+cellIndexRankMap.set(47, 5);
+
+cellIndexRankMap.set(57, 5);
+cellIndexRankMap.set(58, 5);
+cellIndexRankMap.set(59, 5);
+cellIndexRankMap.set(60, 5);
+
+// Inner corners
+cellIndexRankMap.set(18, 4);
+cellIndexRankMap.set(21, 4);
+cellIndexRankMap.set(42, 4);
+cellIndexRankMap.set(45, 4);
+
+// Others
+// Rank === 3
+
+// C Cells
+cellIndexRankMap.set(1, 2);
+cellIndexRankMap.set(6, 2);
+cellIndexRankMap.set(8, 2);
+cellIndexRankMap.set(15, 2);
+
+cellIndexRankMap.set(48, 2);
+cellIndexRankMap.set(55, 2);
+cellIndexRankMap.set(57, 2);
+cellIndexRankMap.set(62, 2);
+
+// X Cells
+cellIndexRankMap.set(9, 1);
+cellIndexRankMap.set(14, 1);
+cellIndexRankMap.set(49, 1);
+cellIndexRankMap.set(54, 1);
+
+export interface CellRankAndIndex {
+  index: number;
+  rank: number;
+}
+
+export const getCellRank = (cellIndex: number): CellRankAndIndex => {
+  if (cellIndexRankMap.has(cellIndex)) {
+    const rank = cellIndexRankMap.get(cellIndex);
+
+    if (rank === undefined) {
+      return {
+        index: cellIndex,
+        rank: 3
+      };
+    }
+
+    return {
+      index: cellIndex,
+      rank
+    };
+  }
+
+  return {
+    index: cellIndex,
+    rank: 3
+  };
+}
+
+export interface CellStatusAndIndex {
+  index: number;
+  status: GameCellIsWhiteStatus;
+}
+
+export interface CellLine {
+  items: CellStatusAndIndex[];
+}
 
 interface RowColumnIndices {
   rowIndex: number;
@@ -9,6 +99,10 @@ interface RowColumnIndices {
 export const getRowColumnIndicesFromCellIndex = (
   cellIndex: number
 ): RowColumnIndices => {
+  if (!Number.isInteger(cellIndex)) {
+    throw new Error("cellIndex must be a whole number");
+  }
+
   if (cellIndex < 0) {
     throw new Error("cellIndex must be greater than or equal to zero");
   }
@@ -26,7 +120,7 @@ export const getRowColumnIndicesFromCellIndex = (
   };
 };
 
-const getBoardCellIndex = (rowIndex: number, columnIndex: number): number => {
+export const getBoardCellIndex = (rowIndex: number, columnIndex: number): number => {
   if (!Number.isInteger(rowIndex)) {
     throw new Error("rowIndex must be a whole number");
   }
@@ -129,7 +223,7 @@ const getAdjacentCellLine = (
   return result;
 };
 
-const getAdjacentCellLines = (
+export const getAdjacentCellLines = (
   boardState: GameCellIsWhiteStatus[],
   rowIndex: number,
   columnIndex: number
@@ -214,3 +308,71 @@ export const getCapturedCellIndices = (
 
   return results;
 };
+
+export const getValidCellIndices = (boardState: GameCellIsWhiteStatus[], currentPlayerIsWhite: boolean): number[] => {
+
+  const cellStatusAndIndexItems = boardState.map(
+    (gameCellIsWhiteStatus: GameCellIsWhiteStatus, index: number): CellStatusAndIndex => {
+      const isEmptyCell = gameCellIsWhiteStatus === undefined;
+
+      if (isEmptyCell) {
+        return {
+          status: gameCellIsWhiteStatus,
+          index
+        };
+      }
+
+      return {
+        status: gameCellIsWhiteStatus,
+        index: -1
+      };
+    });
+
+  const emptyCellStatusAndIndexItems = cellStatusAndIndexItems.filter(emptyCell => emptyCell.index > -1);
+
+  const emptyCellsWithAdjacentOpponentCell: CellStatusAndIndex[] = [];
+
+  for (let emptyCellStatusAndIndexItem of emptyCellStatusAndIndexItems) {
+    const column = emptyCellStatusAndIndexItem.index % 8;
+    const row = (emptyCellStatusAndIndexItem.index - column) / 8;
+
+    const adjacentCellLines = getAdjacentCellLines(boardState, row, column);
+
+    for (let adjacentCellLine of adjacentCellLines) {
+      if (adjacentCellLine.items.length) {
+
+        let adjacentOpponentCellCount = 0;
+
+        for (let i = 0; i < adjacentCellLine.items.length; i++) {
+          const currentAdjacentCellStatusAndIndex = adjacentCellLine.items[i];
+
+          const adjacentCellIsWhiteStatus = currentAdjacentCellStatusAndIndex.status;
+          const adjacentCellIsPopulated = adjacentCellIsWhiteStatus !== undefined;
+
+          if (!adjacentCellIsPopulated) {
+            break;
+          }
+
+          const adjacentCellIsOpponentCell = (
+            adjacentCellIsPopulated &&
+              currentPlayerIsWhite ?
+              !adjacentCellIsWhiteStatus : adjacentCellIsWhiteStatus
+          );
+
+          if (adjacentCellIsOpponentCell) {
+            adjacentOpponentCellCount++;
+          } else {
+            // Is current player's cell
+            if (adjacentOpponentCellCount > 0) {
+              emptyCellsWithAdjacentOpponentCell.push(emptyCellStatusAndIndexItem);
+            }
+
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  return emptyCellsWithAdjacentOpponentCell.map(emptyCell => emptyCell.index);
+}

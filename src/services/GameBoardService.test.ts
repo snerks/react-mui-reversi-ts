@@ -1,5 +1,3 @@
-import React from "react";
-import { render } from "@testing-library/react";
 import * as GameBoardService from "./GameBoardService";
 
 test("with input of zero returns correct result", () => {

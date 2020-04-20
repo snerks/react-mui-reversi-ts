@@ -20,7 +20,7 @@ import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissa
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 import GameCell from "./GameCell";
 import GameFinishedSnackbar from "./GameFinishedSnackBar";
-import { getCapturedCellIndices } from "../services/GameBoardService";
+import { getCapturedCellIndices, getBoardCellIndex, getValidCellIndices, getCellRank } from "../services/GameBoardService";
 
 const useStyles = makeStyles((theme) => {
 
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => {
             [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
-            [theme.breakpoints.up('lg')]: {
+            [theme.breakpoints.up('xl')]: {
                 fontSize: 60,
             }
         },
@@ -79,15 +79,6 @@ export const initialGameBoard: GameCellIsWhiteStatus[] = [
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
 ];
 
-export interface CellStatusAndIndex {
-    status: GameCellIsWhiteStatus;
-    index: number;
-}
-
-export interface CellLine {
-    items: CellStatusAndIndex[];
-}
-
 interface GameBoardListProps {
     initialBoard: GameCellIsWhiteStatus[];
 }
@@ -102,233 +93,35 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
 
     console.log("currentPlayerIsWhite", currentPlayerIsWhite);
 
+    const selectComputedValidCell = () => {
+        const validCellOrNull = getComputedValidCellIndex();
+        if (validCellOrNull === null) {
+            pass();
+            return;
+        }
+
+        const { row, column } = getBoardCellCoords(validCellOrNull);
+
+        handleCellClick(row, column);
+    }
+
     useEffect(() => {
         console.log("useEffect : currentPlayerIsWhite : ", currentPlayerIsWhite);
 
         // Computer plays as white
         if (currentPlayerIsWhite) {
-            selectRandomValidCell();
+            selectComputedValidCell();
             return;
         }
 
     }, [currentPlayerIsWhite]);
 
-    // const getCapturedCellIndices = (currentPlayerIsWhite: boolean, boardCellIndex: number): number[] => {
-    //     let result: number[] = [];
-
-    //     const column = boardCellIndex % 8;
-    //     const row = (boardCellIndex - column) / 8;
-
-    //     const adjacentCellLines = getAdjacentCellLines(row, column);
-
-    //     for (let adjacentCellLine of adjacentCellLines) {
-    //         if (adjacentCellLine.items.length) {
-
-    //             let adjacentOpponentCellCount = 0;
-    //             const adjacentOppentCellIndices: number[] = [];
-
-    //             for (let i = 0; i < adjacentCellLine.items.length; i++) {
-    //                 let currentAdjacentCellStatusAndIndex = adjacentCellLine.items[i];
-
-    //                 let adjacentCellIsWhiteStatus = currentAdjacentCellStatusAndIndex.status;
-    //                 let adjacentCellIsPopulated = adjacentCellIsWhiteStatus !== undefined;
-
-    //                 if (!adjacentCellIsPopulated) {
-    //                     break;
-    //                 }
-
-    //                 let adjacentCellIsOpponentCell = (
-    //                     adjacentCellIsPopulated &&
-    //                         currentPlayerIsWhite ?
-    //                         !adjacentCellIsWhiteStatus : adjacentCellIsWhiteStatus
-    //                 );
-
-    //                 if (adjacentCellIsOpponentCell) {
-    //                     adjacentOpponentCellCount++;
-    //                     adjacentOppentCellIndices.push(currentAdjacentCellStatusAndIndex.index);
-    //                 } else {
-    //                     // Is current player's cell
-    //                     if (adjacentOpponentCellCount > 0) {
-    //                         result = [
-    //                             ...result,
-    //                             ...adjacentOppentCellIndices
-    //                         ];
-    //                     }
-
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     return result;
-    // }
-
-    const getBoardCellIndex = (row: number, column: number): number => {
-        return row * 8 + column;
-    }
-
-    const getAdjacentCellStatusAndIndex = (
-        row: number,
-        column: number,
-        rowOffest: number,
-        columnOffset: number
-    ): CellStatusAndIndex | null => {
-
-        const candidateCellLineItemRowIndex = row + rowOffest;
-        const candidateCellLineItemColumnIndex = column + columnOffset;
-
-        const candidateCellLineItemRowIndexIsInRange =
-            candidateCellLineItemRowIndex > -1 &&
-            candidateCellLineItemRowIndex < 8;
-
-        const candidateCellLineItemColumnIndexIsInRange =
-            candidateCellLineItemColumnIndex > -1 &&
-            candidateCellLineItemColumnIndex < 8;
-
-        const candidateCellLineItemCoordsInRange =
-            candidateCellLineItemRowIndexIsInRange &&
-            candidateCellLineItemColumnIndexIsInRange;
-
-        if (!candidateCellLineItemCoordsInRange) {
-            return null;
-        }
-
-        const candidateCellLineItemIndex =
-            getBoardCellIndex(candidateCellLineItemRowIndex, candidateCellLineItemColumnIndex);
-
-        const candidateCellLineItemIsWhiteStatus = boardState[candidateCellLineItemIndex];
-
-        return {
-            status: candidateCellLineItemIsWhiteStatus,
-            index: candidateCellLineItemIndex
-        };
-    }
-
-    const getAdjacentCellLines = (row: number, column: number): CellLine[] => {
-
-        const result: CellLine[] = [];
-
-        // start at 12 o'clock
-        result.push(getAdjacentCellLine(row, column, -1, 0));
-        result.push(getAdjacentCellLine(row, column, -1, 1));
-        result.push(getAdjacentCellLine(row, column, 0, 1));
-        result.push(getAdjacentCellLine(row, column, 1, 1));
-        result.push(getAdjacentCellLine(row, column, 1, 0));
-        result.push(getAdjacentCellLine(row, column, 1, -1));
-        result.push(getAdjacentCellLine(row, column, 0, -1));
-        result.push(getAdjacentCellLine(row, column, -1, -1));
-
-        return result;
-    }
-
-    const getAdjacentCellLine = (
-        row: number,
-        column: number,
-        rowOffest: number,
-        columnOffset: number): CellLine => {
-
-        const result: CellLine = {
-            items: []
-        };
-
-        let currentRowIndex = row;
-        let currentColumnIndex = column;
-
-        let adjacentCellStatusAndIndex: CellStatusAndIndex | null;
-
-        do {
-            adjacentCellStatusAndIndex =
-                getAdjacentCellStatusAndIndex(
-                    currentRowIndex,
-                    currentColumnIndex,
-                    rowOffest,
-                    columnOffset
-                );
-
-            if (adjacentCellStatusAndIndex) {
-                result.items.push(adjacentCellStatusAndIndex);
-
-                currentRowIndex += rowOffest;
-                currentColumnIndex += columnOffset;
-            }
-        } while (!!adjacentCellStatusAndIndex);
-
-        return result;
-    }
-
-    const getValidCellIndices = (board: GameCellIsWhiteStatus[], currentPlayerIsWhite: boolean): number[] => {
-
-        const cellStatusAndIndexItems = board.map(
-            (gameCellIsWhiteStatus: GameCellIsWhiteStatus, index: number): CellStatusAndIndex => {
-                const isEmptyCell = gameCellIsWhiteStatus === undefined;
-
-                if (isEmptyCell) {
-                    return {
-                        status: gameCellIsWhiteStatus,
-                        index
-                    };
-                }
-
-                return {
-                    status: gameCellIsWhiteStatus,
-                    index: -1
-                };
-            });
-
-        const emptyCellStatusAndIndexItems = cellStatusAndIndexItems.filter(emptyCell => emptyCell.index > -1);
-
-        const emptyCellsWithAdjacentOpponentCell: CellStatusAndIndex[] = [];
-
-        for (let emptyCellStatusAndIndexItem of emptyCellStatusAndIndexItems) {
-            const column = emptyCellStatusAndIndexItem.index % 8;
-            const row = (emptyCellStatusAndIndexItem.index - column) / 8;
-
-            const adjacentCellLines = getAdjacentCellLines(row, column);
-
-            for (let adjacentCellLine of adjacentCellLines) {
-                if (adjacentCellLine.items.length) {
-
-                    let adjacentOpponentCellCount = 0;
-
-                    for (let i = 0; i < adjacentCellLine.items.length; i++) {
-                        const currentAdjacentCellStatusAndIndex = adjacentCellLine.items[i];
-
-                        const adjacentCellIsWhiteStatus = currentAdjacentCellStatusAndIndex.status;
-                        const adjacentCellIsPopulated = adjacentCellIsWhiteStatus !== undefined;
-
-                        if (!adjacentCellIsPopulated) {
-                            break;
-                        }
-
-                        const adjacentCellIsOpponentCell = (
-                            adjacentCellIsPopulated &&
-                                currentPlayerIsWhite ?
-                                !adjacentCellIsWhiteStatus : adjacentCellIsWhiteStatus
-                        );
-
-                        if (adjacentCellIsOpponentCell) {
-                            adjacentOpponentCellCount++;
-                        } else {
-                            // Is current player's cell
-                            if (adjacentOpponentCellCount > 0) {
-                                emptyCellsWithAdjacentOpponentCell.push(emptyCellStatusAndIndexItem);
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        return emptyCellsWithAdjacentOpponentCell.map(emptyCell => emptyCell.index);
-    }
-
     const handleCellClick = (row: number, column: number) => {
         console.log("handleCellClick : Start", row, column);
 
         const boardCellIndex = getBoardCellIndex(row, column);
+
+        console.log("handleCellClick : cellIndex", boardCellIndex);
 
         console.log("handleCellClick : currentPlayerIsWhite", currentPlayerIsWhite);
 
@@ -376,16 +169,43 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
         return { row, column };
     }
 
-    const selectRandomValidCell = () => {
+    const getComputedValidCellIndex = (): number | null => {
         const validCells = getValidCellIndices(boardState, currentPlayerIsWhite);
         if (validCells.length === 0) {
-            pass();
-            return;
+            return null;
+        }
+
+        const cellRankAndIndices = validCells.map(cellIndex => getCellRank(cellIndex));
+
+        cellRankAndIndices.sort((itemA, itemB) => itemA.rank - itemB.rank);
+        console.log("getComputedValidCellIndex", cellRankAndIndices);
+
+        const randomValidCellAndIndex = cellRankAndIndices[cellRankAndIndices.length - 1];
+
+        console.log("getComputedValidCellIndex : result = ", randomValidCellAndIndex);
+
+        return randomValidCellAndIndex.index;
+    }
+
+    const getRandomValidCellIndex = (): number | null => {
+        const validCells = getValidCellIndices(boardState, currentPlayerIsWhite);
+        if (validCells.length === 0) {
+            return null;
         }
 
         const randomValidCellIndex = validCells[0];
 
-        const { row, column } = getBoardCellCoords(randomValidCellIndex);
+        return randomValidCellIndex;
+    }
+
+    const selectRandomValidCell = () => {
+        const validCellOrNull = getRandomValidCellIndex();
+        if (validCellOrNull === null) {
+            pass();
+            return;
+        }
+
+        const { row, column } = getBoardCellCoords(validCellOrNull);
 
         handleCellClick(row, column);
     }
@@ -479,7 +299,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     const handleClickFunction = (row: number, column: number) => handleCellClick(row, column);
 
                     return (
-                        <GridListTile key={cellNumber} cols={1}>
+                        <GridListTile key={cellNumber} cols={1} style={{ cursor: isValidCell ? 'pointer' : 'not-allowed' }}>
                             <div className={classes.cell}>
                                 {/* <FiberManualRecordIcon className={classes.token} style={{ color: cellColor }} /> */}
                                 <GameCell
@@ -549,6 +369,13 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
             {
                 isGameFinished &&
                 <GameFinishedSnackbar message={`Winner is ${winnerName}!`} />
+            }
+
+            {
+                !isGameFinished &&
+                !currentPlayerIsWhite &&
+                passCount > 0 &&
+                <GameFinishedSnackbar message={`Computer has passed!`} />
             }
         </div>
     );

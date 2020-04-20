@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) =>
             [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
-            [theme.breakpoints.up('lg')]: {
+            [theme.breakpoints.up('xl')]: {
                 fontSize: 60,
             }
         },
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) =>
             [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
-            [theme.breakpoints.up('lg')]: {
+            [theme.breakpoints.up('xl')]: {
                 fontSize: 60,
             },
         }
@@ -75,7 +75,7 @@ const GameCell: React.FC<GameCellProps> = (props) => {
     let emptyCellText = '\u00a0';
 
     let emptyCellContent =
-        <span className={classes.validCellMarker} style={{ color: discColor }}>{emptyCellText}</span>;
+        <span className={classes.validCellMarker} style={{ color: discColor, cursor: 'not-allowed' }}>{emptyCellText}</span>;
 
     if (!isOccupied && isValid) {
         // emptyCellText = '\u2713';

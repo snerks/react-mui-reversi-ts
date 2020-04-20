@@ -3,12 +3,30 @@ import React, { useEffect } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import { makeStyles, createStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => {
+
+    // const bgColor =
+    //     theme.palette.type === "light" ?
+    //         theme.palette.primary.main :
+    //         undefined;
+
+    return createStyles({
+        root: {
+            backgroundColor: theme.palette.info.main
+        },
+    });
+}
+);
 
 interface Props {
     message: string;
 }
 
 const GameFinishedSnackbar: React.FC<Props> = ({ message }) => {
+    const classes = useStyles();
+
     const [open, setOpen] = React.useState(false);
 
     // const handleClick = () => {
@@ -28,7 +46,7 @@ const GameFinishedSnackbar: React.FC<Props> = ({ message }) => {
     };
 
     return (
-        <div>
+        <div className={classes.root}>
             {/* <Button onClick={handleClick}>Open simple snackbar</Button> */}
             <Snackbar
                 anchorOrigin={{

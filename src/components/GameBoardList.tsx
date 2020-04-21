@@ -12,17 +12,23 @@ import {
     BottomNavigationAction,
     Badge,
     CircularProgress,
-    LinearProgress
+    LinearProgress,
+    Hidden,
+    Paper
 } from "@material-ui/core";
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import RestoreIcon from '@material-ui/icons/Restore';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import RestorePageIcon from '@material-ui/icons/RestorePage';
+import UndoIcon from '@material-ui/icons/Undo';
 
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 import GameCell from "./GameCell";
 import GameFinishedSnackbar from "./GameFinishedSnackBar";
-import { getCapturedCellIndices, getBoardCellIndex, getValidCellIndices, getCellRank, getNextBoardState, alphabeta } from "../services/GameBoardService";
+import { getCapturedCellIndices, getBoardCellIndex, getValidCellIndices, getCellRank, getNextBoardState, alphabeta, GameMove, getReplayedBoardState } from "../services/GameBoardService";
 
 const useStyles = makeStyles((theme) => {
 
@@ -92,6 +98,11 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
     const [boardState, setBoardState] = useState(initialBoard);
     const [currentPlayerIsWhite, setCurrentPlayerIsWhite] = useState(false);
     const [passCount, setPassCount] = useState(0);
+
+    const [gameMoves, setGameMoves] = useState<GameMove[]>([]);
+
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
     console.log("currentPlayerIsWhite", currentPlayerIsWhite);
 
@@ -195,11 +206,16 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
         setCurrentPlayerIsWhite(!currentPlayerIsWhite);
         setPassCount(0);
 
+        const nextGameMoves = [...gameMoves, { currentPlayerIsWhite, boardPlacedCellIndex }];
+        setGameMoves(nextGameMoves);
+        console.table(nextGameMoves);
+
         console.log("handleCellClick : End", row, column);
     }
 
     const restart = () => {
         setBoardState(initialGameBoard);
+        setGameMoves([]);
         setCurrentPlayerIsWhite(false);
         setPassCount(0);
     }
@@ -207,6 +223,34 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
     const pass = () => {
         setCurrentPlayerIsWhite(!currentPlayerIsWhite);
         setPassCount(passCount + 1);
+    }
+
+    const undoLastMove = () => {
+        if (gameMoves.length === 0) {
+            return;
+        }
+
+        const nextGameMoves = [...gameMoves];
+
+        let lastGameMove: GameMove | null = null;
+        let isUndoComplete = false;
+
+        do {
+            lastGameMove = nextGameMoves[nextGameMoves.length - 1];
+
+            nextGameMoves.pop();
+
+            if (!lastGameMove.currentPlayerIsWhite) {
+                isUndoComplete = true;
+            }
+        } while (!isUndoComplete && nextGameMoves.length > 0)
+
+        console.table(nextGameMoves);
+
+        const nextBoardState = getReplayedBoardState(initialBoard, nextGameMoves);
+        setBoardState(nextBoardState);
+        setGameMoves(nextGameMoves);
+        setCurrentPlayerIsWhite(currentPlayerIsWhite);
     }
 
     const getBoardCellCoords = (index: number): { row: number, column: number } => {
@@ -390,33 +434,52 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     // setValue(newValue);
                     console.log(newValue);
 
-                    if (newValue === 0) {
+                    if (newValue === "Restart") {
                         restart();
                         return;
                     }
 
-                    if (newValue === 1) {
+                    if (newValue === "Random") {
                         // selectRandomValidCell();
                         selectComputedValidCell();
                         return;
                     }
 
-                    if (newValue === 2) {
+                    if (newValue === "Pass") {
                         pass();
+                        return;
+                    }
+
+                    if (newValue === "UndoLastMove") {
+                        undoLastMove();
                         return;
                     }
                 }}
                 showLabels
                 className={classes.root}
             >
-                <BottomNavigationAction label="Restart" icon={<RestoreIcon />} />
+                <BottomNavigationAction
+                    label="Restart"
+                    value="Restart"
+                    icon={<RestorePageIcon />} />
 
                 {
                     !isGameFinished &&
                     validCells.length > 0 &&
                     <BottomNavigationAction
                         label="Random"
+                        value="Random"
                         icon={<ShuffleIcon />}
+                    />
+                }
+
+                {
+                    !isGameFinished &&
+                    gameMoves.length > 0 &&
+                    <BottomNavigationAction
+                        label="Undo"
+                        value="UndoLastMove"
+                        icon={<UndoIcon />}
                     />
                 }
 
@@ -426,9 +489,28 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     (validCells.length === 0) &&
                     <BottomNavigationAction
                         label="Must Pass!"
+                        value="Pass"
                         icon={<SentimentVeryDissatisfiedIcon />} />
                 }
             </BottomNavigation>
+
+            {/* <div>
+                <Hidden xsUp>
+                    <Paper>xsUp</Paper>
+                </Hidden>
+                <Hidden smUp>
+                    <Paper>smUp</Paper>
+                </Hidden>
+                <Hidden mdUp>
+                    <Paper>mdUp</Paper>
+                </Hidden>
+                <Hidden lgUp>
+                    <Paper>lgUp</Paper>
+                </Hidden>
+                <Hidden xlUp>
+                    <Paper>xlUp</Paper>
+                </Hidden>
+            </div> */}
 
             {
                 isGameFinished &&

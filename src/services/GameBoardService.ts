@@ -12,6 +12,11 @@ const boardCellScores = [
   99, -8, 8, 6, 6, 8, -8, 99
 ];
 
+export interface GameMove {
+  currentPlayerIsWhite: boolean,
+  boardPlacedCellIndex: number
+}
+
 export const getHeuristicValue = (
   boardState: GameCellIsWhiteStatus[],
   currentPlayerIsWhite: boolean): number => {
@@ -141,6 +146,28 @@ export const getNextBoardState = (
   // console.log("handleCellClick : End : boardPlacedCellIndex", boardPlacedCellIndex);
 
   return nextBoard;
+}
+
+export const getReplayedBoardState = (
+  boardState: GameCellIsWhiteStatus[],
+  gameMoves: GameMove[]
+): GameCellIsWhiteStatus[] => {
+
+  // console.log("getReplayedBoardState : Start");
+
+  let nextBoardState: GameCellIsWhiteStatus[] = boardState;
+
+  for (let gameMove of gameMoves) {
+    nextBoardState =
+      getNextBoardState(
+        nextBoardState,
+        gameMove.currentPlayerIsWhite,
+        gameMove.boardPlacedCellIndex);
+  }
+
+  // console.log("handleCellClick : End : boardPlacedCellIndex", boardPlacedCellIndex);
+
+  return nextBoardState;
 }
 
 const cellIndexRankMap = new Map<number, number>();

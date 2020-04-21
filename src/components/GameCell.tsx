@@ -34,12 +34,15 @@ const useStyles = makeStyles((theme) =>
                 fontSize: 25,
             },
             [theme.breakpoints.up('sm')]: {
-                fontSize: 30,
+                fontSize: 35,
             },
             [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
             [theme.breakpoints.up('lg')]: {
+                fontSize: 50,
+            },
+            [theme.breakpoints.up('xl')]: {
                 fontSize: 60,
             }
         },
@@ -49,14 +52,17 @@ const useStyles = makeStyles((theme) =>
                 fontSize: 25,
             },
             [theme.breakpoints.up('sm')]: {
-                fontSize: 30,
+                fontSize: 35,
             },
             [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
             [theme.breakpoints.up('lg')]: {
-                fontSize: 60,
+                fontSize: 50,
             },
+            [theme.breakpoints.up('xl')]: {
+                fontSize: 60,
+            }
         }
     })
 );

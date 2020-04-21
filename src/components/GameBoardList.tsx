@@ -14,7 +14,8 @@ import {
     CircularProgress,
     LinearProgress,
     Hidden,
-    Paper
+    Paper,
+    Typography
 } from "@material-ui/core";
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -494,17 +495,21 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                 }
             </BottomNavigation>
 
-            <Grid container spacing={1}
+            <Grid container
                 justify="space-evenly"
                 alignItems="center"
                 direction="column"
                 style={{ marginTop: 15 }}
             >
                 <Grid item xs={6} style={{ textAlign: "center" }}>
-                    Version : {process.env.REACT_APP_VERSION}
+                    <Typography variant="caption" display="block" gutterBottom>
+                        Version : {process.env.REACT_APP_VERSION}
+                    </Typography>
                 </Grid>
                 <Grid item xs={6} style={{ textAlign: "center" }}>
-                    2020.04.21 19.11
+                    <Typography variant="caption" display="block" gutterBottom>
+                        {process.env.REACT_APP_TIMESTAMP}
+                    </Typography>
                 </Grid>
             </Grid>
 

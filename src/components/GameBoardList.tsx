@@ -28,7 +28,7 @@ import UndoIcon from '@material-ui/icons/Undo';
 import { GameCellIsWhiteStatus } from "../types/CustomTypes";
 import GameCell from "./GameCell";
 import GameFinishedSnackbar from "./GameFinishedSnackBar";
-import { getCapturedCellIndices, getBoardCellIndex, getValidCellIndices, getCellRank, getNextBoardState, alphabeta, GameMove, getReplayedBoardState } from "../services/GameBoardService";
+import { getCapturedCellIndices, getBoardCellIndex, getValidCellIndices, getCellRank, getNextBoardState, alphabeta, GameMove, getReplayedBoardState, consoleTableOrLog } from "../services/GameBoardService";
 
 const useStyles = makeStyles((theme) => {
 
@@ -208,7 +208,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
 
         const nextGameMoves = [...gameMoves, { currentPlayerIsWhite, boardPlacedCellIndex }];
         setGameMoves(nextGameMoves);
-        console.table(nextGameMoves);
+        consoleTableOrLog(nextGameMoves);
 
         console.log("handleCellClick : End", row, column);
     }
@@ -245,7 +245,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
             }
         } while (!isUndoComplete && nextGameMoves.length > 0)
 
-        console.table(nextGameMoves);
+        consoleTableOrLog(nextGameMoves);
 
         const nextBoardState = getReplayedBoardState(initialBoard, nextGameMoves);
         setBoardState(nextBoardState);

@@ -17,6 +17,14 @@ export interface GameMove {
   boardPlacedCellIndex: number
 }
 
+export const consoleTableOrLog = (value: any) => {
+  if (console.table) {
+    console.table(value)
+  } else {
+    console.log(value);
+  }
+}
+
 export const getHeuristicValue = (
   boardState: GameCellIsWhiteStatus[],
   currentPlayerIsWhite: boolean): number => {

@@ -12,7 +12,7 @@ const boardCellScores = [
   99, -8, 8, 6, 6, 8, -8, 99
 ];
 
-const getHeuristicValue = (
+export const getHeuristicValue = (
   boardState: GameCellIsWhiteStatus[],
   currentPlayerIsWhite: boolean): number => {
 

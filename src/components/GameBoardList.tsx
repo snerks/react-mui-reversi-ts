@@ -131,7 +131,7 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
         for (let validCellIndex of validCellIndices) {
             const nextBoardState = getNextBoardState(boardState, currentPlayerIsWhite, validCellIndex);
 
-            console.table(nextBoardState);
+            // console.table(nextBoardState);
 
             const nextAlpha = alphabeta(nextBoardState, 2, alpha, beta, false);
 
@@ -396,7 +396,8 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                     }
 
                     if (newValue === 1) {
-                        selectRandomValidCell();
+                        // selectRandomValidCell();
+                        selectComputedValidCell();
                         return;
                     }
 

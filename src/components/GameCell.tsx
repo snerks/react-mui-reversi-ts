@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) =>
             [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
-            [theme.breakpoints.up('xl')]: {
+            [theme.breakpoints.up('lg')]: {
                 fontSize: 60,
             }
         },
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) =>
             [theme.breakpoints.up('md')]: {
                 fontSize: 40,
             },
-            [theme.breakpoints.up('xl')]: {
+            [theme.breakpoints.up('lg')]: {
                 fontSize: 60,
             },
         }

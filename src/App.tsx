@@ -20,21 +20,19 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Paper elevation={0} square style={{ height: "100%" }}>
-        <div style={{ paddingBottom: 100 }}>
-          <Grid container direction="column">
-            <Grid item>
-              <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
-            </Grid>
-            <Grid item container>
-              <Grid item xs={false} sm={1} />
-              <Grid item xs={12} sm={10}>
-                {/* <BoardList /> */}
-                <GamePageList />
-              </Grid>
-              <Grid item xs={false} sm={1} />
-            </Grid>
+        <Grid container direction="column">
+          <Grid item>
+            <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
           </Grid>
-        </div>
+          <Grid item container>
+            <Grid item xs={false} sm={1} />
+            <Grid item xs={12} sm={10}>
+              {/* <BoardList /> */}
+              <GamePageList />
+            </Grid>
+            <Grid item xs={false} sm={1} />
+          </Grid>
+        </Grid>
       </Paper>
     </ThemeProvider>
   );

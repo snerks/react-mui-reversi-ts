@@ -494,6 +494,20 @@ const GameBoardList: React.FC<GameBoardListProps> = ({ initialBoard }) => {
                 }
             </BottomNavigation>
 
+            <Grid container spacing={1}
+                justify="space-evenly"
+                alignItems="center"
+                direction="column"
+                style={{ marginTop: 15 }}
+            >
+                <Grid item xs={6} style={{ textAlign: "center" }}>
+                    Version : {process.env.REACT_APP_VERSION}
+                </Grid>
+                <Grid item xs={6} style={{ textAlign: "center" }}>
+                    2020.04.21 19.11
+                </Grid>
+            </Grid>
+
             {/* <div>
                 <Hidden xsUp>
                     <Paper>xsUp</Paper>

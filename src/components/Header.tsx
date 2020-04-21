@@ -20,7 +20,7 @@ const Header: React.FC<Props> = ({ isDarkMode, setIsDarkMode }) => {
     <AppBar position="static">
       <Toolbar>
         <Typography className={classes.typographyStyles}>
-          Material UI Reversi
+          Material UI Reversi (v{process.env.REACT_APP_VERSION})
         </Typography>
         <Paper title="use this switch for dark/light mode">
           <HighlightIcon />
